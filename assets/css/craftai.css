@@ -53,7 +53,8 @@ h2.title em { font-style: italic; font-weight: 900; color: var(--royal); }
 .nav .bar { display: flex; align-items: center; gap: 24px; min-height: 64px; }
 .brand { display: flex; align-items: center; gap: 14px; flex: none; }
 .brand img { height: 38px; width: auto; max-width: none; }
-.brand img:last-child { height: 44px; }
+.brand .bfl { height: 44px; }
+.lk { display: flex; align-items: center; }
 .brand i { width: 1px; height: 30px; background: rgba(255,255,255,.3); }
 .nav ul { display: flex; gap: 30px; list-style: none; margin: 0 auto; padding: 0; }
 .menu-reg { display: none; }
@@ -82,6 +83,8 @@ h2.title em { font-style: italic; font-weight: 900; color: var(--royal); }
 @keyframes glint { 0% { background-position: 120% 0; } 55%, 100% { background-position: -40% 0; } }
 .cta-row { left: 5%; top: 45.48%; display: flex; gap: 14px; z-index: 9; }
 
+.tlink { color: inherit; font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; text-decoration-color: var(--royal); }
+.tlink:hover { color: var(--royal); }
 .ribbon { position: absolute; left: -3%; right: -3%; bottom: -2cqw; padding-bottom: calc(4.7cqw + 10px); z-index: 10; transform: rotate(-3deg); background: var(--yellow); border-top: 5px solid var(--navy); box-shadow: 0 -14px 0 -8px #1b34d8; overflow: hidden; }
 .ribbon .track { display: flex; width: max-content; animation: scroll 80s linear infinite; }
 .ribbon span { display: flex; align-items: center; gap: clamp(14px, 2cqw, 28px); padding: clamp(10px, 1.4cqw, 18px) 0 clamp(10px, 1.4cqw, 18px) clamp(14px, 2cqw, 28px); font: 900 italic clamp(15px, 2.15cqw, 30px)/1 var(--f-display); text-transform: uppercase; color: var(--navy); white-space: nowrap; }
@@ -248,7 +251,7 @@ footer { background: var(--navy); color: #fff; padding-block: clamp(40px, 5vw, 5
 .foot .b small { font: 700 10px/1 var(--f-body); letter-spacing: .14em; text-transform: uppercase; color: #aab6ff; }
 .flogos { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
 .flogos img { height: 52px; width: auto; max-width: none; }
-.flogos img:last-child { height: 62px; }
+.flogos .bfl { height: 62px; }
 .flogos i { width: 1px; height: 40px; background: rgba(255,255,255,.3); }
 .foot .b .hand { font: 800 italic 14px/1 var(--f-display); letter-spacing: .08em; color: var(--cyan); text-transform: uppercase; }
 .foot .b .ig { display: inline-flex; align-items: center; gap: 10px; margin-top: 6px; padding: 10px 16px; border-radius: 999px; border: 1.5px solid rgba(255,255,255,.35); color: #fff; font: 600 13px/1.2 var(--f-body); transition: background .2s, border-color .2s, color .2s; }
@@ -376,12 +379,12 @@ footer { background: var(--navy); color: #fff; padding-block: clamp(40px, 5vw, 5
   .foot { grid-template-columns: 1fr 1fr; }
   .foot .b { grid-column: 1 / -1; }
   .flogos img { height: 40px; }
-  .flogos img:last-child { height: 48px; }
+  .flogos .bfl { height: 48px; }
   .fact { grid-template-columns: 22px 72px 1fr; padding-inline: 16px; }
   .show li { grid-template-columns: 64px 1fr; gap: 12px; }
   .nav .btn-sm { padding: 0 14px; }
 }
-@media (max-width: 380px) { .brand { gap: 8px; } .brand img { height: 22px; } .brand img:last-child { height: 26px; } .nav .bar { gap: 8px; } }
+@media (max-width: 380px) { .brand { gap: 8px; } .brand img { height: 22px; } .brand .bfl { height: 26px; } .nav .bar { gap: 8px; } }
 @media (max-width: 560px) { .nav .right > .btn { display: none; } .menu-reg { display: block !important; } }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
