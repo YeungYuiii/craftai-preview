@@ -83,7 +83,7 @@ h2.title em { font-style: italic; font-weight: 900; color: var(--royal); }
 .cta-row { left: 5%; top: 45.48%; display: flex; gap: 14px; z-index: 9; }
 
 .ribbon { position: absolute; left: -3%; right: -3%; bottom: -2cqw; padding-bottom: calc(4.7cqw + 10px); z-index: 10; transform: rotate(-3deg); background: var(--yellow); border-top: 5px solid var(--navy); box-shadow: 0 -14px 0 -8px #1b34d8; overflow: hidden; }
-.ribbon .track { display: flex; width: max-content; animation: scroll 32s linear infinite; }
+.ribbon .track { display: flex; width: max-content; animation: scroll 80s linear infinite; }
 .ribbon span { display: flex; align-items: center; gap: clamp(14px, 2cqw, 28px); padding: clamp(10px, 1.4cqw, 18px) 0 clamp(10px, 1.4cqw, 18px) clamp(14px, 2cqw, 28px); font: 900 italic clamp(15px, 2.15cqw, 30px)/1 var(--f-display); text-transform: uppercase; color: var(--navy); white-space: nowrap; }
 .ribbon svg { width: clamp(12px, 1.6cqw, 22px); height: auto; fill: var(--royal); flex: none; }
 @keyframes scroll { to { transform: translateX(-50%); } }
