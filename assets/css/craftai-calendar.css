@@ -33,110 +33,100 @@
 }
 @media (max-width: 380px) { .class-date-list { grid-template-columns: minmax(0, 1fr); } }
 
-/* The calendar uses course-level colours plus event shapes to make dates scannable. */
+/* Calendar layout follows CityUHK's stacked academic-calendar month rows. */
 .academic-calendar { padding-block: clamp(40px, 6vw, 76px); background: #fff; }
 .academic-calendar .calendar-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
 .academic-calendar .calendar-head > div { display: grid; gap: 12px; }
-.academic-calendar .calendar-intro { color: var(--muted); max-width: 64ch; font-size: 14px; margin-top: 14px; }
-#calendarApp { --cal-ink: #0a1360; --cal-line: #d9e1f7; color: var(--cal-ink); }
-#calendarApp button, #calendarApp select { font: inherit; }
+.academic-calendar .calendar-intro { color: #555; max-width: 74ch; font-size: 15px; margin-top: 14px; }
+#calendarApp { --cityu-magenta: #bf165e; color: #2e2e2e; font: 400 16px/1.6 "Montserrat", "Noto Sans HK", Arial, sans-serif; }
+#calendarApp button, #calendarApp select, #calendarApp table { font: inherit; }
 #calendarApp button { cursor: pointer; }
-#calendarApp button:focus-visible, #calendarApp select:focus-visible { outline: 3px solid #1b34d8; outline-offset: 3px; }
-.cal-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-.cal-toolbar { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 22px; }
-.cal-month-controls { display: flex; align-items: end; gap: 10px; flex: none; }
-.cal-select-wrap { display: grid; gap: 5px; min-width: 0; }
-.cal-select-wrap > span { font-size: 11px; line-height: 1.4; text-transform: uppercase; letter-spacing: .1em; font-weight: 800; color: #4b5690; }
-.cal-select-wrap select { min-height: 46px; border: 1px solid #b9c7ee; border-radius: 10px; padding: 10px 32px 10px 12px; color: #0a1360; background: #fff; max-width: 100%; min-width: 0; font-size: 14px !important; font-weight: 700 !important; }
-.cal-course-filter { width: min(100%, 480px); }
-.cal-arrow { display: grid; place-items: center; width: 46px; height: 46px; flex: none; border-radius: 50%; background: #0a1360; color: #fff; border: 0; font-size: 24px !important; line-height: 1 !important; }
-.cal-arrow:hover:not(:disabled) { background: #1b34d8; }
-.cal-arrow:disabled { opacity: .25; cursor: default !important; }
-.cal-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 24px; align-items: start; }
-.cal-month-panel { background: #eff3ff; border: 1px solid #d9e1f7; border-radius: 22px; padding: clamp(16px, 2vw, 26px); min-width: 0; }
-.cal-month-title { font: 900 30px/1.15 var(--f-display); letter-spacing: -.02em; margin: 0 0 22px; color: #0a1360; }
-.cal-table { width: 100%; border-collapse: separate; border-spacing: 3px; table-layout: fixed; }
-.cal-table th { text-align: center; font-size: 11px; color: #4b5690; font-weight: 800; text-transform: uppercase; padding: 0 0 10px; }
-.cal-table td { height: 70px; border-radius: 9px; vertical-align: top; padding: 0; }
-.cal-table .cal-no-events { background: rgba(255,255,255,.65); color: #6f7aa4; padding: 8px; }
-.cal-table .cal-no-events.cal-weekend { background: #e2e9ff; }
-.cal-day { position: relative; background: #fff; color: #0a1360; border: 1px solid #c1cff6; border-radius: 9px; min-height: 70px; width: 100%; padding: 7px; text-align: left; display: flex; flex-direction: column; align-items: start; gap: 6px; }
-.cal-day:hover { border-color: #1b34d8; background: #f8faff; }
-.cal-day.cal-day-selected { border: 2px solid #0a1360; padding: 6px; background: #ffe22e; box-shadow: 0 3px 0 #0a1360; }
-.cal-day-number { display: block; font-size: 14px; line-height: 1.2; font-weight: 800; }
-.cal-day-events { display: flex; flex-wrap: wrap; gap: 4px 6px; }
-.cal-mini-event { display: flex; align-items: center; gap: 3px; font-size: 9px; font-weight: 800; line-height: 1.25; }
-.cal-level-1 { --cal-colour: #a8e2fb; --cal-colour-ink: #12658d; }
-.cal-level-2 { --cal-colour: #46c98a; --cal-colour-ink: #08613d; }
-.cal-level-3 { --cal-colour: #ffc933; --cal-colour-ink: #735300; }
-.cal-level-4 { --cal-colour: #b79cff; --cal-colour-ink: #6733a7; }
-.cal-level-5 { --cal-colour: #1b34d8; --cal-colour-ink: #1b34d8; }
-.cal-mark { display: inline-block; width: 8px; height: 8px; flex: none; background: var(--cal-colour-ink, #0a1360); border: 1px solid var(--cal-colour-ink, #0a1360); }
-.cal-mark--class { border-radius: 50%; }
-.cal-mark--assessment { transform: rotate(45deg); width: 7px; height: 7px; margin-inline: 1px; }
-.cal-mark--other { background: transparent; border-radius: 50%; border-width: 2px; }
-.cal-kind-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; border-top: 1px solid #d0dbf6; margin-top: 18px; padding-top: 14px; font-size: 11px; color: #4b5690; }
-.cal-kind-legend > span, .cal-level-legend > span { display: inline-flex; align-items: center; gap: 7px; }
-.cal-level-legend { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 14px; font-size: 10px; font-weight: 800; }
-.cal-level-legend i { width: 15px; height: 5px; background: var(--cal-colour-ink); border-radius: 1px; }
-.cal-agenda { min-width: 0; max-height: 630px; overflow-y: auto; padding: 1px 8px 8px 0; scrollbar-width: thin; scrollbar-color: #adbde9 transparent; }
-.cal-agenda-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
-.cal-agenda-heading h3 { margin: 0; font: 800 22px/1.2 var(--f-display); }
-.cal-agenda-heading > span { font-size: 11px; font-weight: 700; color: #4b5690; white-space: nowrap; }
-.cal-clear-day { display: inline-block; padding: 0; margin-bottom: 18px; border: 0; color: #1b34d8; background: none; font-size: 12px !important; font-weight: 700 !important; text-decoration: underline; text-underline-offset: 3px; }
-.cal-agenda-days, .cal-event-list { list-style: none; padding: 0; margin: 0; }
-.cal-agenda-day + .cal-agenda-day { margin-top: 20px; }
-.cal-agenda-day h4 { margin: 0 0 8px; font: 800 12px/1.4 var(--f-body); color: #4b5690; }
-.cal-event { border: 1px solid #d9e1f7; border-left: 5px solid var(--cal-colour); border-radius: 0 12px 12px 0; padding: 13px 15px; background: #fff; }
-.cal-event + .cal-event { margin-top: 8px; }
-.cal-event-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px 12px; margin-bottom: 7px; font-size: 11px; line-height: 1.4; }
-.cal-event-type { display: inline-flex; align-items: center; gap: 7px; color: var(--cal-colour-ink); font-weight: 800; }
-.cal-event-time { color: #4b5690; font-weight: 700; }
-.cal-event-code { font-size: 12px; display: block; color: #0a1360; }
-.cal-event p { margin: 3px 0 0; font: 700 14px/1.35 var(--f-body); color: #0a1360; }
-.cal-course-link { border: 0; border-bottom: 1px solid #b7c3e7; background: none; color: #1b34d8; padding: 2px 0; margin-top: 7px; font-size: 11px !important; font-weight: 700 !important; }
-.cal-course-link:hover { border-bottom-color: #1b34d8; }
-.cal-empty-state { border: 1px dashed #b7c3e7; border-radius: 16px; background: #f6f8ff; padding: 26px; color: #4b5690; font-size: 14px; line-height: 1.5; }
-.cal-empty-state strong { color: #0a1360; display: block; }
-.cal-empty-state p { margin-top: 8px; }
+#calendarApp button:focus-visible, #calendarApp select:focus-visible, #calendarApp [tabindex="0"]:focus-visible { outline: 3px solid #bf165e; outline-offset: 3px; }
+.cityu-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.cityu-period-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-bottom: 28px; }
+.cityu-period-tabs button { min-width: 0; border: 1px solid #bf165e; color: #bf165e; background: #fff; padding: 14px 12px; border-radius: 4px; font-weight: 700 !important; line-height: 1.4 !important; text-align: center; }
+.cityu-period-tabs button[aria-selected="true"] { color: #fff; background: #bf165e; }
+.cityu-period-tabs button:hover:not([aria-selected="true"]) { background: #fff2f7; }
+.cityu-calendar-tools { display: grid; grid-template-columns: minmax(0, 1fr) minmax(190px, .42fr); gap: 24px; align-items: end; margin-bottom: 16px; }
+.cityu-calendar-tools label { display: grid; gap: 6px; min-width: 0; font-size: 13px; font-weight: 700; }
+.cityu-calendar-tools select { width: 100%; min-width: 0; max-width: 100%; min-height: 44px; border: 1px solid #aaa; color: #2e2e2e; background: #fff; border-radius: 0; padding: 8px 34px 8px 12px; font-size: 14px !important; font-weight: 400 !important; }
+.cityu-calendar-tools select:disabled { color: #777; background: #f5f5f5; }
+.cityu-calendar-key { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-bottom: 25px; font-size: 12px; color: #555; }
+.cityu-calendar-key span { display: inline-flex; align-items: center; gap: 7px; }
+.cityu-calendar-key i { width: 15px; height: 15px; border: 1px solid #b8b8b8; display: inline-block; }
+.cityu-key-class { background: #e8f3ff; }
+.cityu-key-assessment { background: #fff4d6; }
+.cityu-key-support { background: #f3f3f3; }
+.cityu-period-panel { outline-offset: 6px; }
+.cityu-month-row { display: grid; grid-template-columns: minmax(0, .4fr) minmax(0, .6fr); gap: 28px; align-items: start; padding: 0 0 36px; margin-bottom: 36px; border-bottom: 1px solid #c9c9c9; scroll-margin-top: 88px; }
+.cityu-month-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: 0; }
+.cityu-month-frame { min-width: 0; border: 1px solid #c9c9c9; border-radius: 8px; overflow: hidden; }
+.cityu-month-heading { margin: 0; padding: 16px 8px; color: #fff; background: linear-gradient(90deg, #df7433 0%, #da562b 30%, #cc103c 75%, #9f0d43 100%); text-align: center; font: 900 18px/1.4 "Montserrat", "Noto Sans HK", Arial, sans-serif; }
+.cityu-month-grid { width: 100%; table-layout: fixed; border-collapse: collapse; color: #2e2e2e; }
+.cityu-month-grid th { background: #f0f0f0; font-size: 13px; font-weight: 600; padding: 7px 1px; line-height: 1.5; text-align: center; }
+.cityu-month-grid td { height: 45px; padding: 0; text-align: center; vertical-align: middle; font-size: 15px; border: 0; }
+.cityu-month-grid td:last-child { border-right: 0; }
+.cityu-month-grid .cityu-sunday { color: #bf165e; }
+.cityu-month-grid .cityu-outside { background: #fff; }
+.cityu-date-event.cityu-event-class { background: #e8f3ff; }
+.cityu-date-event.cityu-event-assessment { background: #fff4d6; }
+.cityu-date-event.cityu-event-support { background: #f3f3f3; }
+.cityu-date-event.cityu-event-mixed { background: repeating-linear-gradient(135deg, #e8f3ff 0, #e8f3ff 8px, #fff4d6 8px, #fff4d6 16px); }
+.cityu-date-button { display: block; width: 100%; min-height: 45px; padding: 5px 2px; color: inherit; background: transparent; border: 0; border-radius: 0; font-size: 15px !important; line-height: 1.4 !important; font-weight: 700 !important; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.cityu-date-button:hover { box-shadow: inset 0 0 0 2px #bf165e; }
+.cityu-date-button[aria-pressed="true"] { box-shadow: inset 0 0 0 2px #bf165e; color: #9f0d43; background: #fce8f0; }
+.cityu-events-wrap { min-width: 0; }
+.cityu-events-table { width: 100%; border-collapse: collapse; table-layout: fixed; color: #2e2e2e; font-size: 14px !important; line-height: 1.6 !important; }
+.cityu-events-table th, .cityu-events-table td { border: 1px solid #c9c9c9; padding: 12px 14px; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+.cityu-events-table th { font-weight: 700; background: #f4f4f4; }
+.cityu-events-table th:first-child { width: 29%; }
+.cityu-event-date { font-weight: 500; }
+.cityu-event-entry + .cityu-event-entry { margin-top: 12px; padding-top: 12px; border-top: 1px solid #ddd; }
+.cityu-event-kind { display: block; font-weight: 700; }
+.cityu-course-link { border: 0; padding: 0; margin: 3px 0; display: block; border-radius: 0; background: none; color: #bf165e; text-align: left; font-size: 14px !important; line-height: 1.55 !important; font-weight: 500 !important; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.cityu-course-link:hover { color: #8d0e42; }
+.cityu-shared-level { display: block; margin: 3px 0; }
+.cityu-event-time { display: block; color: #555; font-size: 13px; }
+.cityu-clear-date { display: block; margin-bottom: 10px; padding: 0; border: 0; border-radius: 0; background: none; color: #bf165e; font-size: 13px !important; text-align: left; text-decoration: underline; text-underline-offset: 3px; }
+.cityu-empty-month { color: #666; font-size: 14px; }
+.cityu-empty-period { padding: 24px; border: 1px solid #c9c9c9; color: #555; }
+.cityu-empty-period strong { color: #2e2e2e; }
+.cityu-empty-period p { margin-top: 8px; }
 @media (max-width: 960px) {
-  .cal-toolbar { align-items: start; gap: 16px; }
-  .cal-course-filter { flex: 1; }
-  .cal-layout { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 18px; }
-  .cal-table td, .cal-day { min-height: 60px; height: 60px; }
-  .cal-table .cal-no-events { padding: 7px; }
-  .cal-short-code { display: none; }
-  .cal-month-title { font-size: 26px; }
+  .cityu-period-tabs { gap: 12px; }
+  .cityu-month-row { grid-template-columns: minmax(0, .42fr) minmax(0, .58fr); gap: 20px; }
+  .cityu-events-table th, .cityu-events-table td { padding: 10px; }
+  .cityu-events-table th:first-child { width: 30%; }
+  .cityu-month-grid th { font-size: 11px; }
+  .cityu-month-grid td, .cityu-date-button { height: 40px; min-height: 40px; }
 }
 @media (max-width: 720px) {
-  .cal-toolbar { display: grid; grid-template-columns: minmax(0, 1fr); }
-  .cal-month-controls { justify-content: space-between; }
-  .cal-month-controls .cal-select-wrap { flex: 1; }
-  .cal-month-controls select { width: 100%; }
-  .cal-course-filter { width: 100%; }
-  .cal-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; }
-  .cal-agenda { max-height: none; overflow-y: visible; padding-right: 0; }
-  .cal-month-panel { padding: 16px; }
-  .cal-short-code { display: inline; }
-  .cal-table td, .cal-day { height: 60px; min-height: 60px; }
+  .cityu-period-tabs { gap: 8px; margin-bottom: 22px; }
+  .cityu-period-tabs button { padding: 12px 6px; font-size: 13px !important; }
+  .cityu-calendar-tools { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .cityu-month-row { grid-template-columns: minmax(0, 1fr); gap: 18px; padding-bottom: 30px; margin-bottom: 30px; }
+  .cityu-month-frame { max-width: 100%; }
+  .cityu-month-grid th { font-size: 13px; }
+  .cityu-month-grid td, .cityu-date-button { height: 44px; min-height: 44px; }
+  .cityu-calendar-key { gap: 8px 14px; font-size: 11px; }
+  .cityu-events-table th:first-child { width: 28%; }
 }
-@media (max-width: 420px) {
-  .cal-month-panel { padding: 12px 9px 16px; }
-  .cal-table { border-spacing: 2px; }
-  .cal-day { padding: 6px; }
-  .cal-day.cal-day-selected { padding: 5px; }
-  .cal-table .cal-no-events { padding: 7px; }
-  .cal-short-code { display: none; }
-  .cal-day-number { font-size: 13px; }
-  .cal-kind-legend { font-size: 10px; gap: 8px 12px; }
-  .cal-month-title { margin-bottom: 16px; font-size: 25px; }
-  .cal-select-wrap select { font-size: 13px !important; }
-  .cal-event { padding: 12px; }
+@media (max-width: 380px) {
+  .cityu-period-tabs button { font-size: 12px !important; padding: 11px 4px; }
+  .cityu-month-heading { padding-block: 14px; }
+  .cityu-events-table { font-size: 13px !important; }
+  .cityu-events-table th, .cityu-events-table td { padding: 9px; }
+  .cityu-course-link { font-size: 13px !important; }
+  .cityu-event-time { font-size: 12px; }
 }
 
-.academic-calendar { padding-block: 16px clamp(56px, 7vw, 88px); }
-.calendar-section-heading { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 18px; }
-.calendar-section-heading > div { display: grid; gap: 12px; }
-.calendar-intro { max-width: 75ch; color: var(--muted); margin-bottom: 24px; font-size: 15px; }
-.calendar-source-note { color: var(--muted); font-size: 12px; margin-top: 18px; max-width: 100ch; }
-@media(max-width:560px) { .calendar-section-heading { flex-wrap: wrap; align-items: start; } }
+/* Match CityUHK's academic-calendar heading and typography within this section. */
+.academic-calendar { padding-block: clamp(40px, 5vw, 70px); background: #fff; color: #2e2e2e; font-family: "Montserrat", "Noto Sans HK", Arial, sans-serif; }
+.academic-calendar .calendar-section-heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 18px; }
+.academic-calendar .calendar-section-heading > div { display: grid; gap: 10px; }
+.academic-calendar h2.title { color: #2e2e2e; font: 700 clamp(28px, 3.5vw, 42px)/1.2 "Montserrat", "Noto Sans HK", Arial, sans-serif; letter-spacing: -.025em; }
+.academic-calendar .eyebrow { color: #bf165e; font-family: inherit; }
+.academic-calendar .provisional-badge { background: #bf165e; color: #fff; border-radius: 4px; font-family: inherit; }
+.academic-calendar .calendar-intro { margin: 0 0 24px; max-width: 90ch; color: #555; font-size: 14px; line-height: 1.65; }
+.academic-calendar .calendar-source-note { margin-top: 24px; padding-top: 18px; border-top: 1px solid #dedede; color: #555; font-size: 12px; line-height: 1.65; max-width: 100%; }
+@media(max-width:560px) { .academic-calendar .calendar-section-heading { align-items: start; flex-wrap: wrap; } }

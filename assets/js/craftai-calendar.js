@@ -1,33 +1,34 @@
 (function () {
   'use strict';
   var app, view, status, courses = [], schedule = { courses: [], events: [] };
-  var state = { lang: 'en', month: '2027-01', course: -1, day: null };
-  var months = [];
-  for (var year = 2027; year <= 2028; year++) {
-    for (var month = 1; month <= (year === 2028 ? 5 : 12); month++) {
-      months.push(year + '-' + String(month).padStart(2, '0'));
-    }
-  }
+  var state = { lang: 'en', group: 0, course: -1, days: {} };
+  var groups = [
+    { en: 'Jan–May 2027', zh: '2027 年 1–5 月', year: 2027, first: 1, last: 5 },
+    { en: 'Jun–Dec 2027', zh: '2027 年 6–12 月', year: 2027, first: 6, last: 12 },
+    { en: 'Jan–May 2028', zh: '2028 年 1–5 月', year: 2028, first: 1, last: 5 }
+  ];
   var copy = {
     en: {
-      month: 'Month', course: 'Course', allCourses: 'All courses', previous: 'Previous month', next: 'Next month',
-      monthAgenda: 'This month', dayAgenda: 'Selected date', allDates: 'Show all dates this month',
-      noEvents: 'No scheduled sessions this month.', noEventsHint: 'Choose another month or course to see its dates.',
-      viewCourse: 'View course', timeUnknown: 'Time to be confirmed', level: 'Level ',
-      class: 'Class', practical: 'Compulsory practical', project: 'Project Day', exam: 'Exam',
-      resit: 'Resit', report: 'Midterm report', reserve: 'Reserve day', briefing: 'External applicant briefing / make-up',
-      shared: 'Shared Level ', legendClasses: 'Class / practical', legendAssessment: 'Assessment', legendOther: 'Reserve / briefing',
-      event: 'event', events: 'events', weekdays: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      course: 'Course', allCourses: 'All courses', jump: 'Jump to month', date: 'Date', events: 'Events',
+      noEvents: 'No scheduled events this month.', noGroupEvents: 'No scheduled events for this course in this period.',
+      noGroupHint: 'Choose another period or select all courses.', noMonths: 'No matching months',
+      clearDate: 'Show all dates this month', timeUnknown: 'Time to be confirmed', level: 'Shared Level ',
+      class: 'Class', practical: 'Compulsory practical', project: 'Project Day', exam: 'Exam', resit: 'Resit',
+      report: 'Midterm report', reserve: 'Reserve day', briefing: 'External applicant briefing / make-up',
+      classLegend: 'Classes / practical', assessmentLegend: 'Assessments', supportLegend: 'Reserve / briefing',
+      event: 'event', eventPlural: 'events', tabLabel: 'Academic calendar periods',
+      weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     },
     zh: {
-      month: '月份', course: '課程', allCourses: '所有課程', previous: '上一個月', next: '下一個月',
-      monthAgenda: '本月日程', dayAgenda: '所選日期', allDates: '顯示本月所有日期',
-      noEvents: '本月未有已排定的課程活動。', noEventsHint: '請選擇其他月份或課程，查看相關日期。',
-      viewCourse: '查看課程', timeUnknown: '時間待定', level: '第 ',
-      class: '課堂', practical: '必修實習課', project: 'Project Day', exam: '考試',
-      resit: '補考', report: '中期報告', reserve: '後備日', briefing: '外部申請者回校簡報／補做',
-      shared: '共用：第 ', legendClasses: '課堂／實習', legendAssessment: '評核', legendOther: '後備／簡報',
-      event: '項活動', events: '項活動', weekdays: ['一', '二', '三', '四', '五', '六', '日']
+      course: '課程', allCourses: '所有課程', jump: '跳至月份', date: '日期', events: '活動',
+      noEvents: '本月未有已排定的活動。', noGroupEvents: '此課程在這段期間未有已排定的活動。',
+      noGroupHint: '請選擇其他期間，或選擇所有課程。', noMonths: '未有相關月份',
+      clearDate: '顯示本月所有日期', timeUnknown: '時間待定', level: '共用：第 ',
+      class: '課堂', practical: '必修實習課', project: 'Project Day', exam: '考試', resit: '補考',
+      report: '中期報告', reserve: '後備日', briefing: '外部申請者回校簡報／補做',
+      classLegend: '課堂／實習', assessmentLegend: '評核', supportLegend: '後備／簡報',
+      event: '項活動', eventPlural: '項活動', tabLabel: '學術日曆期間',
+      weekdays: ['日', '一', '二', '三', '四', '五', '六']
     }
   };
   function esc(value) {
@@ -35,160 +36,160 @@
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
-  function utcDate(iso) { return new Date(iso + 'T12:00:00Z'); }
+  function dateObject(iso) { return new Date(iso + 'T12:00:00Z'); }
   function formatDate(iso, options) {
-    return new Intl.DateTimeFormat(state.lang === 'zh' ? 'zh-HK' : 'en-GB', Object.assign({ timeZone: 'UTC' }, options)).format(utcDate(iso));
+    return new Intl.DateTimeFormat(state.lang === 'zh' ? 'zh-HK' : 'en-GB', Object.assign({ timeZone: 'UTC' }, options)).format(dateObject(iso));
   }
-  function monthTitle(value) { return formatDate(value + '-01', { month: 'long', year: 'numeric' }); }
-  function dateTitle(value) { return formatDate(value, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); }
-  function levelTitle(level, shared) {
-    return (shared ? copy[state.lang].shared : copy[state.lang].level) + level + (state.lang === 'zh' ? ' 級' : '');
-  }
-  function eventLevel(event) { return event.courseIndex == null ? event.level : courses[event.courseIndex].lv; }
-  function eventGroup(event) {
-    return /^(class|practical)$/.test(event.kind) ? 'class' : /^(reserve|briefing)$/.test(event.kind) ? 'other' : 'assessment';
-  }
-  function courseData(index) {
-    return schedule.courses.find(function (item) { return item.courseIndex === index; });
-  }
-  function eventLabel(event) {
-    var label = copy[state.lang][event.kind] || event.kind;
-    var item = courseData(event.courseIndex);
-    if (event.kind === 'class' && item && item.classes) {
-      var number = item.classes.indexOf(event.date) + 1;
-      if (number) label += state.lang === 'zh' ? ' ' + number : ' ' + number;
-    }
-    return label;
-  }
-  function filteredEvents() {
+  function monthTitle(month) { return formatDate(month + '-01', { month: 'long', year: 'numeric' }); }
+  function dayTitle(iso) { return formatDate(iso, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); }
+  function compactDate(iso) { return formatDate(iso, { day: 'numeric', month: 'long', year: 'numeric' }); }
+  function courseData(index) { return schedule.courses.find(function (item) { return item.courseIndex === index; }); }
+  function matchingEvents(month) {
     return schedule.events.filter(function (event) {
-      if (event.date.slice(0, 7) !== state.month) return false;
+      if (event.date.slice(0, 7) !== month) return false;
       if (state.course === -1) return true;
       return event.courseIndex === state.course || (event.courseIndex == null && event.level === courses[state.course].lv);
     }).slice().sort(function (a, b) {
       return a.date.localeCompare(b.date) || (a.startTime || '99:99').localeCompare(b.startTime || '99:99') || String(a.kind).localeCompare(String(b.kind));
     });
   }
-  function countLabel(count) {
-    var t = copy[state.lang];
-    return count + ' ' + (count === 1 ? t.event : t.events);
+  function visibleMonths() {
+    var group = groups[state.group], result = [];
+    for (var number = group.first; number <= group.last; number++) {
+      var month = group.year + '-' + String(number).padStart(2, '0');
+      if (state.course === -1 || matchingEvents(month).length) result.push(month);
+    }
+    return result;
   }
-  function timeLabel(event) {
-    if (!event.startTime) return copy[state.lang].timeUnknown;
-    return event.startTime + (event.endTime ? '–' + event.endTime : '');
+  function kindGroup(event) {
+    return /^(class|practical)$/.test(event.kind) ? 'class' : /^(reserve|briefing)$/.test(event.kind) ? 'support' : 'assessment';
   }
-  function renderGrid(events) {
-    var t = copy[state.lang], first = utcDate(state.month + '-01');
-    var offset = (first.getUTCDay() + 6) % 7;
+  function eventLabel(event) {
+    var label = copy[state.lang][event.kind] || event.kind, course = courseData(event.courseIndex);
+    if (event.kind === 'class' && course && course.classes) {
+      var number = course.classes.indexOf(event.date) + 1;
+      if (number) label += ' ' + number;
+    }
+    return label;
+  }
+  function countLabel(count) { return count + ' ' + (count === 1 ? copy[state.lang].event : copy[state.lang].eventPlural); }
+  function timeLabel(event) { return event.startTime ? event.startTime + (event.endTime ? '–' + event.endTime : '') : copy[state.lang].timeUnknown; }
+  function renderMonthGrid(month, events) {
+    var first = dateObject(month + '-01'), offset = first.getUTCDay();
     var total = new Date(Date.UTC(first.getUTCFullYear(), first.getUTCMonth() + 1, 0)).getUTCDate();
-    var rows = '', slots = Math.ceil((offset + total) / 7) * 7;
+    var slots = Math.ceil((offset + total) / 7) * 7, rows = '';
     for (var slot = 0; slot < slots; slot++) {
       if (slot % 7 === 0) rows += '<tr>';
-      var day = slot - offset + 1;
-      if (day < 1 || day > total) rows += '<td class="cal-empty" aria-hidden="true"></td>';
+      var day = slot - offset + 1, sunday = slot % 7 === 0 ? ' cityu-sunday' : '';
+      if (day < 1 || day > total) rows += '<td class="cityu-outside" aria-hidden="true"></td>';
       else {
-        var iso = state.month + '-' + String(day).padStart(2, '0');
+        var iso = month + '-' + String(day).padStart(2, '0');
         var daily = events.filter(function (event) { return event.date === iso; });
-        var weekend = slot % 7 >= 5 ? ' cal-weekend' : '';
+        var kinds = [];
+        daily.forEach(function (event) { var kind = kindGroup(event); if (kinds.indexOf(kind) < 0) kinds.push(kind); });
         if (daily.length) {
-          var markers = daily.map(function (event) {
-            var shortCode = event.courseIndex == null ? 'L' + event.level : courses[event.courseIndex].code.replace('BFAI ', '');
-            return '<span class="cal-mini-event cal-level-' + eventLevel(event) + '"><i class="cal-mark cal-mark--' + eventGroup(event) + '" aria-hidden="true"></i><span class="cal-short-code" aria-hidden="true">' + esc(shortCode) + '</span></span>';
-          }).join('');
-          rows += '<td class="cal-has-events' + weekend + '"><button type="button" class="cal-day' + (state.day === iso ? ' cal-day-selected' : '') + '" data-cal-date="' + iso + '" aria-pressed="' + (state.day === iso ? 'true' : 'false') + '" aria-label="' + esc(dateTitle(iso) + ': ' + countLabel(daily.length)) + '" aria-controls="cal-agenda"><span class="cal-day-number">' + day + '</span><span class="cal-day-events">' + markers + '</span></button></td>';
-        } else rows += '<td class="cal-no-events' + weekend + '"><span class="cal-day-number">' + day + '</span></td>';
+          var highlight = kinds.length > 1 ? 'mixed' : kinds[0];
+          rows += '<td class="cityu-date-event cityu-event-' + highlight + sunday + '"><button type="button" class="cityu-date-button" data-cityu-date="' + iso + '" aria-pressed="' + (state.days[month] === iso ? 'true' : 'false') + '" aria-label="' + esc(dayTitle(iso) + ': ' + countLabel(daily.length)) + '" aria-controls="cityu-events-' + month + '">' + day + '</button></td>';
+        } else rows += '<td class="cityu-date' + sunday + '">' + day + '</td>';
       }
       if (slot % 7 === 6) rows += '</tr>';
     }
-    return '<table class="cal-table"><caption class="cal-sr-only">' + esc(monthTitle(state.month)) + '</caption><thead><tr>' + t.weekdays.map(function (day) { return '<th scope="col">' + day + '</th>'; }).join('') + '</tr></thead><tbody>' + rows + '</tbody></table>';
+    return '<div class="cityu-month-frame"><h3 class="cityu-month-heading" id="cityu-month-heading-' + month + '">' + esc(monthTitle(month)) + '</h3><table class="cityu-month-grid" aria-labelledby="cityu-month-heading-' + month + '"><thead><tr>' + copy[state.lang].weekdays.map(function (day, i) { return '<th scope="col"' + (i === 0 ? ' class="cityu-sunday"' : '') + '>' + day + '</th>'; }).join('') + '</tr></thead><tbody>' + rows + '</tbody></table></div>';
   }
-  function renderAgenda(events) {
-    var t = copy[state.lang];
-    var shown = state.day ? events.filter(function (event) { return event.date === state.day; }) : events;
-    var heading = '<div class="cal-agenda-heading"><h3>' + (state.day ? t.dayAgenda : t.monthAgenda) + '</h3><span>' + esc(countLabel(shown.length)) + '</span></div>';
-    if (state.day) heading += '<button type="button" class="cal-clear-day" data-cal-clear="true">' + t.allDates + ' ↗</button>';
-    if (!shown.length) return heading + '<div class="cal-empty-state"><strong>' + t.noEvents + '</strong><p>' + t.noEventsHint + '</p></div>';
+  function renderEventTable(month, events) {
+    var t = copy[state.lang], selected = state.days[month];
+    var shown = selected ? events.filter(function (event) { return event.date === selected; }) : events;
     var dates = [];
     shown.forEach(function (event) { if (dates.indexOf(event.date) < 0) dates.push(event.date); });
-    return heading + '<ol class="cal-agenda-days">' + dates.map(function (date) {
-      return '<li class="cal-agenda-day"><h4><time datetime="' + date + '">' + esc(dateTitle(date)) + '</time></h4><ul class="cal-event-list">' + shown.filter(function (event) { return event.date === date; }).map(function (event) {
+    var rows = dates.map(function (date) {
+      return '<tr><td class="cityu-event-date"><time datetime="' + date + '">' + esc(compactDate(date)) + '</time></td><td>' + shown.filter(function (event) { return event.date === date; }).map(function (event) {
         var course = event.courseIndex == null ? null : courses[event.courseIndex];
-        return '<li class="cal-event cal-level-' + eventLevel(event) + '"><div class="cal-event-meta"><span class="cal-event-type"><i class="cal-mark cal-mark--' + eventGroup(event) + '" aria-hidden="true"></i>' + esc(eventLabel(event)) + '</span><span class="cal-event-time">' + esc(timeLabel(event)) + '</span></div><strong class="cal-event-code">' + esc(course ? course.code : levelTitle(event.level, true)) + '</strong>' + (course ? '<p>' + esc(course[state.lang].title) + '</p><button type="button" class="cal-course-link" data-i="' + event.courseIndex + '">' + t.viewCourse + ' ↑</button>' : '') + '</li>';
-      }).join('') + '</ul></li>';
-    }).join('') + '</ol>';
+        return '<div class="cityu-event-entry"><strong class="cityu-event-kind">' + esc(eventLabel(event)) + '</strong>' + (course ? '<button type="button" class="cityu-course-link" data-i="' + event.courseIndex + '">' + esc(course.code + ' · ' + course[state.lang].title) + '</button>' : '<span class="cityu-shared-level">' + esc(t.level + event.level + (state.lang === 'zh' ? ' 級' : '')) + '</span>') + '<span class="cityu-event-time">' + esc(timeLabel(event)) + '</span></div>';
+      }).join('') + '</td></tr>';
+    }).join('');
+    if (!rows) rows = '<tr><td colspan="2" class="cityu-empty-month">' + t.noEvents + '</td></tr>';
+    return '<div class="cityu-events-wrap" id="cityu-events-' + month + '">' + (selected ? '<button type="button" class="cityu-clear-date" data-cityu-clear="' + month + '">' + t.clearDate + ' ↗</button>' : '') + '<table class="cityu-events-table"><caption class="cityu-sr-only">' + esc(monthTitle(month) + ' · ' + t.events) + '</caption><thead><tr><th scope="col">' + t.date + '</th><th scope="col">' + t.events + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
   }
   function rememberFocus() {
     var active = document.activeElement;
     if (!active || !app.contains(active)) return null;
     if (active.id) return '#' + active.id;
-    if (active.hasAttribute('data-cal-date')) return '[data-cal-date="' + active.getAttribute('data-cal-date') + '"]';
-    if (active.hasAttribute('data-cal-move')) return '[data-cal-move="' + active.getAttribute('data-cal-move') + '"]';
-    if (active.hasAttribute('data-cal-clear')) return '#cal-month';
+    if (active.hasAttribute('data-cityu-date')) return '[data-cityu-date="' + active.getAttribute('data-cityu-date') + '"]';
+    if (active.hasAttribute('data-cityu-clear')) return '#cityu-jump-month';
     return null;
   }
   function render(announce) {
     if (!app || !view) return;
-    var t = copy[state.lang], events = filteredEvents(), monthIndex = months.indexOf(state.month), focus = rememberFocus();
-    view.innerHTML = '<div class="cal-toolbar"><div class="cal-month-controls"><button type="button" class="cal-arrow" data-cal-move="-1" aria-label="' + t.previous + '"' + (monthIndex === 0 ? ' disabled' : '') + '>←</button><label class="cal-select-wrap"><span>' + t.month + '</span><select id="cal-month">' + months.map(function (month) { return '<option value="' + month + '"' + (month === state.month ? ' selected' : '') + '>' + esc(monthTitle(month)) + '</option>'; }).join('') + '</select></label><button type="button" class="cal-arrow" data-cal-move="1" aria-label="' + t.next + '"' + (monthIndex === months.length - 1 ? ' disabled' : '') + '>→</button></div><label class="cal-select-wrap cal-course-filter"><span>' + t.course + '</span><select id="cal-course"><option value="-1">' + t.allCourses + '</option>' + courses.map(function (course, index) { return '<option value="' + index + '"' + (state.course === index ? ' selected' : '') + '>' + esc(course.code + ' · ' + course[state.lang].title) + '</option>'; }).join('') + '</select></label></div><div class="cal-layout"><div class="cal-month-panel"><h3 class="cal-month-title">' + esc(monthTitle(state.month)) + '</h3>' + renderGrid(events) + '<div class="cal-kind-legend"><span><i class="cal-mark cal-mark--class" aria-hidden="true"></i>' + t.legendClasses + '</span><span><i class="cal-mark cal-mark--assessment" aria-hidden="true"></i>' + t.legendAssessment + '</span><span><i class="cal-mark cal-mark--other" aria-hidden="true"></i>' + t.legendOther + '</span></div><div class="cal-level-legend">' + [1, 2, 3, 4, 5].map(function (level) { return '<span class="cal-level-' + level + '"><i aria-hidden="true"></i>' + esc(levelTitle(level, false)) + '</span>'; }).join('') + '</div></div><div class="cal-agenda" id="cal-agenda">' + renderAgenda(events) + '</div></div>';
-    if (announce) status.textContent = monthTitle(state.month) + ', ' + countLabel(events.length) + (state.day ? ', ' + dateTitle(state.day) : '');
+    var t = copy[state.lang], months = visibleMonths(), focus = rememberFocus();
+    var eventsCount = months.reduce(function (sum, month) { return sum + matchingEvents(month).length; }, 0);
+    view.innerHTML = '<div class="cityu-period-tabs" role="tablist" aria-label="' + t.tabLabel + '">' + groups.map(function (group, index) { return '<button type="button" role="tab" id="cityu-period-' + index + '" aria-selected="' + (state.group === index ? 'true' : 'false') + '" aria-controls="cityu-period-panel" tabindex="' + (state.group === index ? '0' : '-1') + '" data-cityu-group="' + index + '">' + group[state.lang] + '</button>'; }).join('') + '</div><div class="cityu-calendar-tools"><label><span>' + t.course + '</span><select id="cityu-course-filter"><option value="-1">' + t.allCourses + '</option>' + courses.map(function (course, index) { return '<option value="' + index + '"' + (state.course === index ? ' selected' : '') + '>' + esc(course.code + ' · ' + course[state.lang].title) + '</option>'; }).join('') + '</select></label><label class="cityu-jump-label"><span>' + t.jump + '</span><select id="cityu-jump-month"' + (months.length ? '' : ' disabled') + '>' + (months.length ? months.map(function (month) { return '<option value="' + month + '">' + esc(monthTitle(month)) + '</option>'; }).join('') : '<option>' + t.noMonths + '</option>') + '</select></label></div><div class="cityu-calendar-key"><span><i class="cityu-key-class" aria-hidden="true"></i>' + t.classLegend + '</span><span><i class="cityu-key-assessment" aria-hidden="true"></i>' + t.assessmentLegend + '</span><span><i class="cityu-key-support" aria-hidden="true"></i>' + t.supportLegend + '</span></div><div class="cityu-period-panel" id="cityu-period-panel" role="tabpanel" aria-labelledby="cityu-period-' + state.group + '" tabindex="0">' + (months.length ? months.map(function (month) { var events = matchingEvents(month); return '<section class="cityu-month-row" id="cityu-row-' + month + '" aria-labelledby="cityu-month-heading-' + month + '">' + renderMonthGrid(month, events) + renderEventTable(month, events) + '</section>'; }).join('') : '<div class="cityu-empty-period"><strong>' + t.noGroupEvents + '</strong><p>' + t.noGroupHint + '</p></div>') + '</div>';
+    if (announce) status.textContent = groups[state.group][state.lang] + ', ' + countLabel(eventsCount);
     if (focus) {
       var target = view.querySelector(focus);
-      if (!target || target.disabled) target = view.querySelector('#cal-month');
-      if (target) target.focus({ preventScroll: true });
+      if (target && !target.disabled) target.focus({ preventScroll: true });
     }
   }
-  function showCourse(index) {
+  function groupForMonth(month) {
+    for (var i = 0; i < groups.length; i++) {
+      var group = groups[i], year = Number(month.slice(0, 4)), number = Number(month.slice(5, 7));
+      if (year === group.year && number >= group.first && number <= group.last) return i;
+    }
+    return 0;
+  }
+  function scrollToMonth(month) {
+    var row = document.getElementById('cityu-row-' + month);
+    if (row) {
+      var jump = document.getElementById('cityu-jump-month');
+      if (jump) jump.value = month;
+      row.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+  function selectCourse(index, scroll) {
     index = Number(index);
-    if (!app || !courses[index]) return;
-    var details = courseData(index);
-    state.course = index;
-    state.month = (details && details.classes && details.classes[0] ? details.classes[0] : details && details.periodStart ? details.periodStart : '2027-01-01').slice(0, 7);
-    state.day = null;
+    if (index !== -1 && !courses[index]) return;
+    state.course = index; state.days = {};
+    var details = courseData(index), first = details && details.classes && details.classes[0] || details && details.periodStart;
+    if (first) state.group = groupForMonth(first.slice(0, 7));
     render(true);
-    var section = document.getElementById('academic-calendar');
-    if (section) section.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    if (scroll && first) scrollToMonth(first.slice(0, 7));
   }
   function init(courseList, scheduleData) {
     app = document.getElementById('calendarApp');
     if (!app) return;
-    courses = courseList;
-    schedule = scheduleData;
+    courses = courseList; schedule = scheduleData;
     app.setAttribute('data-no-translate', '');
-    app.innerHTML = '<div class="cal-view"></div><p class="cal-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>';
-    view = app.querySelector('.cal-view');
-    status = app.querySelector('[role="status"]');
+    app.innerHTML = '<div class="cityu-calendar-view"></div><p class="cityu-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>';
+    view = app.querySelector('.cityu-calendar-view'); status = app.querySelector('[role="status"]');
     app.addEventListener('change', function (event) {
-      if (event.target.id === 'cal-month') {
-        state.month = event.target.value;
-        state.day = null;
-        render(true);
-      } else if (event.target.id === 'cal-course') {
-        state.course = Number(event.target.value);
-        state.day = null;
-        var details = courseData(state.course);
-        if (details && details.classes && details.classes[0]) state.month = details.classes[0].slice(0, 7);
-        render(true);
-      }
+      if (event.target.id === 'cityu-course-filter') selectCourse(event.target.value, false);
+      else if (event.target.id === 'cityu-jump-month') scrollToMonth(event.target.value);
     });
     app.addEventListener('click', function (event) {
-      var move = event.target.closest('[data-cal-move]');
-      var day = event.target.closest('[data-cal-date]');
-      if (move) {
-        var next = months.indexOf(state.month) + Number(move.getAttribute('data-cal-move'));
-        if (next < 0 || next >= months.length) return;
-        state.month = months[next]; state.day = null; render(true);
+      var group = event.target.closest('[data-cityu-group]'), day = event.target.closest('[data-cityu-date]'), clear = event.target.closest('[data-cityu-clear]');
+      if (group) {
+        state.group = Number(group.getAttribute('data-cityu-group')); state.days = {}; render(true);
+        var selected = document.getElementById('cityu-period-' + state.group);
+        if (selected) selected.focus({ preventScroll: true });
       } else if (day) {
-        var chosen = day.getAttribute('data-cal-date');
-        state.day = state.day === chosen ? null : chosen; render(true);
-      } else if (event.target.closest('[data-cal-clear]')) {
-        state.day = null; render(true);
+        var date = day.getAttribute('data-cityu-date'), month = date.slice(0, 7);
+        state.days[month] = state.days[month] === date ? null : date; render(true);
+      } else if (clear) {
+        delete state.days[clear.getAttribute('data-cityu-clear')]; render(true);
       }
+    });
+    app.addEventListener('keydown', function (event) {
+      var tab = event.target.closest('[data-cityu-group]');
+      if (!tab || ['ArrowLeft', 'ArrowRight', 'Home', 'End'].indexOf(event.key) < 0) return;
+      event.preventDefault();
+      var next = event.key === 'Home' ? 0 : event.key === 'End' ? groups.length - 1 : (Number(tab.getAttribute('data-cityu-group')) + (event.key === 'ArrowRight' ? 1 : -1) + groups.length) % groups.length;
+      state.group = next; state.days = {}; render(true);
+      document.getElementById('cityu-period-' + next).focus({ preventScroll: true });
     });
     render(false);
   }
   window.CraftAICalendar = {
     init: init,
     setLang: function (lang) { state.lang = lang === 'zh' ? 'zh' : 'en'; render(false); },
-    showCourse: showCourse
+    showCourse: function (index) { selectCourse(index, true); }
   };
 })();
