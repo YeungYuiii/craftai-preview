@@ -123,6 +123,19 @@ h2.title em { font-style: italic; font-weight: 900; color: var(--royal); }
 .journey .nav-btns button:hover:not(:disabled) { background: var(--yellow); color: var(--navy); border-color: var(--yellow); transform: translateY(-2px); }
 .journey .nav-btns button:disabled { opacity: .35; cursor: default; }
 .journey .nav-btns svg { width: 20px; height: 20px; }
+/* Level takeaways follow the same five-colour progression as the course cards. */
+.level-takeaways { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px; list-style: none; margin: 0 0 32px; padding: 0; }
+.level-takeaway { min-width: 0; border-top: 3px solid var(--level-color); padding-top: 14px; }
+.level-takeaway.lv1 { --level-color: #a8e2fb; }
+.level-takeaway.lv2 { --level-color: #46c98a; }
+.level-takeaway.lv3 { --level-color: #ffc933; }
+.level-takeaway.lv4 { --level-color: #b79cff; }
+.level-takeaway.lv5 { --level-color: #8fa1ff; }
+.level-takeaway h3 { font: 800 19px/1.25 var(--f-display); color: #fff; margin-bottom: 10px; }
+.level-takeaway .level-number { color: var(--level-color); }
+.level-takeaway p { color: #d3dcff; font-size: 14px; line-height: 1.6; }
+@media (max-width: 960px) { .level-takeaways { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; } .level-takeaway:last-child { grid-column: 1 / -1; } }
+@media (max-width: 560px) { .level-takeaways { grid-template-columns: minmax(0, 1fr); } }
 /* nine courses in one horizontally scrolling row; the fifth card peeks in on desktop so the row reads as scrollable */
 .steps { display: flex; gap: 16px; list-style: none; margin: 0; padding: 0 0 18px; padding-inline: max(var(--gutter), calc((100% - var(--maxw)) / 2)); scroll-padding-inline: max(var(--gutter), calc((100% - var(--maxw)) / 2)); overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-top: 8px; padding-bottom: 26px; }
 .steps:focus-visible { outline-offset: 6px; }
