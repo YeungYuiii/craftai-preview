@@ -86,42 +86,6 @@
       weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'
     }).format(new Date(iso + 'T12:00:00Z'));
   }
-  function renderCourseDates(c) {
-    var zh = lang === 'zh', schedule = SCHEDULE.courses[cur];
-    var labels = zh ? {
-      title: '課程日期', provisional: '暫定', classes: '上課日期',
-      practical: '必修實習課', project: 'Project Day', exam: '考試', resit: '補考',
-      report: '中期報告', reserve: '共用後備日', briefing: '外部申請者簡報及補做',
-      more: '在學年日曆查看', unknown: '時間待公佈', zone: '所有時間均為香港時間',
-      research: '研究期由 2028 年 5 月起延至夏季，不設固定完結日。',
-      period: '第 1 至 4 級的課程時段由首堂至主要評核日；後備、補做及補考日期另列。'
-    } : {
-      title: 'Course dates', provisional: 'Provisional', classes: 'Class dates',
-      practical: 'Required practical', project: 'Project Day', exam: 'Exam', resit: 'Resit',
-      report: 'Midterm report', reserve: 'Shared reserve day', briefing: 'External applicant briefing / make-up',
-      more: 'View in academic calendar', unknown: 'Time to be confirmed', zone: 'All times are Hong Kong time',
-      research: 'Research runs from May into summer 2028, with no fixed end date.',
-      period: 'For Levels 1–4, periods run from the first class to the main assessment. Reserve, make-up and resit dates are listed separately.'
-    };
-    var events = SCHEDULE.events.filter(function (e) {
-      return e.kind !== 'class' && (e.courseIndex === cur || (e.courseIndex === null && e.level === c.lv));
-    });
-    var dates = schedule.classes.map(function (date) {
-      return '<li><time datetime="' + date + '">' + scheduleDate(date) + '</time></li>';
-    }).join('');
-    var extra = events.map(function (e) {
-      return '<li class="date-event"><strong>' + labels[e.kind] + '</strong><time datetime="' + e.date + '">' +
-        scheduleDate(e.date) + '</time><span>' + (e.startTime && e.endTime ? e.startTime + '–' + e.endTime : labels.unknown) + '</span></li>';
-    }).join('');
-    document.getElementById('dDates').innerHTML =
-      '<header class="dates-heading"><div><h3>' + labels.title + ' · ' + c.code + '</h3><strong class="provisional-badge">' + labels.provisional + '</strong></div>' +
-      '<button type="button" class="dates-calendar-link" data-calendar-course="' + cur + '">' + labels.more + ' ↓</button></header>' +
-      '<div class="dates-columns"><div><h4>' + labels.classes + '</h4><p class="dates-time">09:00–12:00 · ' + labels.zone + '</p>' +
-      '<ul class="class-date-list">' + dates + '</ul></div><div><ul class="date-event-list">' + extra + '</ul>' +
-      (schedule.researchOpenEnded ? '<p class="research-dates-note">' + labels.research + '</p>' : '') + '</div></div>' +
-      '<p class="dates-footnote">' + labels.period + '</p>';
-  }
-
   function renderDetail(animate) {
     var c = COURSES[cur], d = c[lang], t = T[lang];
     var sec = document.getElementById('course');
@@ -158,7 +122,6 @@
         '<div><h3><small>' + lvLabel(c.lv) + ' · ' + c.code + '</small>' + d.title + '</h3><p>' + d.desc + '</p></div>' +
         '<button type="button" class="btn btn-navy" data-go="1">' + t.see + '</button>';
     }
-    renderCourseDates(c);
     if (animate) {
       ['dLeft', 'dShow'].forEach(function (id) {
         var el = document.getElementById(id); el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap');
@@ -173,8 +136,6 @@
     }
   }
   document.addEventListener('click', function (e) {
-    var calendarButton = e.target.closest ? e.target.closest('[data-calendar-course]') : null;
-    if (calendarButton) { window.CraftAICalendar.showCourse(Number(calendarButton.getAttribute('data-calendar-course'))); return; }
     if (e.target.closest && e.target.closest('[data-go]')) { document.getElementById('course').scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
     var b = e.target.closest ? e.target.closest('[data-i]') : null;
     if (b) {
