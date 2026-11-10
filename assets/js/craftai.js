@@ -60,12 +60,13 @@
   next.addEventListener('click', function () { railBy(1); });
   place();
   window.addEventListener('load', place);
-  var COURSES = [{"code": "BFAI 1001", "lv": 1, "en": {"title": "Introduction to Generative AI and Prompt Engineering", "desc": "Learn how generative AI works and how to write clear prompts that get useful results.", "target": "F1+", "dur": "4 weeks", "period": "Jan – Feb 2027", "venue": "AC1 5/F Classroom", "size": "50 – 60 students (2 classes)"}, "zh": {"title": "生成式 AI 與提示工程入門", "desc": "了解生成式 AI 的運作原理，學習撰寫清晰的提示，得到更有用的結果。", "target": "中一或以上", "dur": "4 星期", "period": "2027 年 1 月至 2 月", "venue": "AC1 5 樓課室", "size": "50 – 60 位學生（2 班）"}}, {"code": "BFAI 1002", "lv": 1, "en": {"title": "Creative Media Production with Generative AI", "desc": "Create images, audio and short videos with generative AI tools, from first idea to finished clip.", "target": "F1+", "dur": "4 weeks", "period": "Feb – Apr 2027", "venue": "AC1 5/F Classroom", "size": "50 – 60 students (2 classes)"}, "zh": {"title": "生成式 AI 創意媒體製作", "desc": "運用生成式 AI 工具創作圖像、聲音及短片，由最初構思到完成作品。", "target": "中一或以上", "dur": "4 星期", "period": "2027 年 2 月至 4 月", "venue": "AC1 5 樓課室", "size": "50 – 60 位學生（2 班）"}}, {"code": "BFAI 2003", "lv": 2, "en": {"title": "Programming Fundamentals and Vibe Coding", "desc": "Write your first programs in Python and learn to build with AI-assisted coding.", "target": "F2/3+", "dur": "5 weeks", "period": "Jun – Jul 2027", "venue": "AC2 Lab + DS Lab", "size": "40 – 50 students (2 classes)"}, "zh": {"title": "編程基礎與 Vibe Coding", "desc": "以 Python 編寫第一個程式，並學習運用 AI 輔助編程進行創作。", "target": "中二／中三或以上", "dur": "5 星期", "period": "2027 年 6 月至 7 月", "venue": "AC2 實驗室 + DS 實驗室", "size": "40 – 50 位學生（2 班）"}}, {"code": "BFAI 2004", "lv": 2, "en": {"title": "Design and Development of AI Assistants", "desc": "Design and build your own AI assistant by linking prompts, tools and logic together.", "target": "F2/3+", "dur": "4 weeks", "period": "Jul – Sep 2027", "venue": "AC2 Lab + DS Lab", "size": "40 – 50 students (2 classes)"}, "zh": {"title": "AI 助手設計與開發", "desc": "把提示、工具與邏輯連結起來，設計並打造屬於自己的 AI 助手。", "target": "中二／中三或以上", "dur": "4 星期", "period": "2027 年 7 月至 9 月", "venue": "AC2 實驗室 + DS 實驗室", "size": "40 – 50 位學生（2 班）"}}, {"code": "BFAI 3005", "lv": 3, "en": {"title": "Introduction to Reinforcement Learning for Game Playing", "desc": "Train an AI agent to play games and see how it learns by trial and error.", "target": "F4+", "dur": "3 weeks", "period": "Sep – Nov 2027", "venue": "AC2 Lab + DS Lab", "size": "30 – 40 students (1 – 2 classes)"}, "zh": {"title": "遊戲強化學習入門", "desc": "訓練 AI 代理玩遊戲，看它如何從嘗試與錯誤中學習。", "target": "中四或以上", "dur": "3 星期", "period": "2027 年 9 月至 11 月", "venue": "AC2 實驗室 + DS 實驗室", "size": "30 – 40 位學生（1 – 2 班）"}}, {"code": "BFAI 3006", "lv": 3, "en": {"title": "Introduction to Machine Learning", "desc": "Find out how computers learn patterns from data, and train your first machine learning models.", "target": "F4+", "dur": "5 weeks", "period": "Oct – Dec 2027", "venue": "AC2 Lab + DS Lab", "size": "30 – 40 students (1 – 2 classes)"}, "zh": {"title": "機器學習入門", "desc": "了解電腦如何從數據中找出規律，並訓練你的第一個機器學習模型。", "target": "中四或以上", "dur": "5 星期", "period": "2027 年 10 月至 12 月", "venue": "AC2 實驗室 + DS 實驗室", "size": "30 – 40 位學生（1 – 2 班）"}}, {"code": "BFAI 4007", "lv": 4, "en": {"title": "Introduction to Deep Learning", "desc": "Explore neural networks and how deep learning powers image, language and speech AI.", "target": "F5+", "dur": "5 weeks", "period": "Jan – Feb 2028", "venue": "AC2 Lab + DS Lab", "size": "20 – 30 students (1 class)"}, "zh": {"title": "深度學習入門", "desc": "探索神經網絡，了解深度學習如何推動圖像、語言及語音 AI。", "target": "中五或以上", "dur": "5 星期", "period": "2028 年 1 月至 2 月", "venue": "AC2 實驗室 + DS 實驗室", "size": "20 – 30 位學生（1 班）"}}, {"code": "BFAI 4008", "lv": 4, "en": {"title": "Foundations of Computational Decision Making", "desc": "Understand the maths behind how AI weighs up options and makes decisions.", "target": "F5+", "dur": "4 weeks", "period": "Feb – Apr 2028", "venue": "AC2 Lab + DS Lab", "size": "Fewer than 20 students"}, "zh": {"title": "計算決策基礎", "desc": "了解 AI 背後的數學，看它如何權衡選項並作出決定。", "target": "中五或以上", "dur": "4 星期", "period": "2028 年 2 月至 4 月", "venue": "AC2 實驗室 + DS 實驗室", "size": "少於 20 位學生"}}, {"code": "BFAI 5009", "lv": 5, "en": {"title": "Research Project in Embodied AI and Robotics", "desc": "Become an independent problem solver on frontier research, helping solve real challenges in robotics and embodied AI.", "points": ["Become an independent problem solver on frontier research", "Help solve real challenges in robotics and embodied AI", "Work in a lab and academic environment", "Collaborate with an academic supervisor"], "lpoints": ["Independent problem solver on frontier research", "Help solve real robotics & embodied AI challenges", "Lab & academic environment", "Collaborate with an academic supervisor"], "target": "To be announced", "dur": "To be announced", "period": "From spring 2028 (research into summer)", "venue": "Lab & academic setting", "size": "To be announced"}, "zh": {"title": "具身智能與機械人研究專題", "desc": "面對前沿研究難題，培養獨立自主解難能力，協助解決機械人及具身智能領域的真實挑戰。", "points": ["面對前沿研究難題，培養獨立自主解難能力", "協助解決機械人及具身智能的真實挑戰", "在實驗室及學術環境中學習", "與學術導師協作"], "lpoints": ["培養獨立自主解難能力", "解決機械人及具身智能真實挑戰", "實驗室及學術環境", "與學術導師協作"], "target": "待公佈", "dur": "待公佈", "period": "2028 年春季起（研究期約至夏季）", "venue": "實驗室及學術環境", "size": "待公佈"}}];
+  var COURSES = [{"code": "BFAI 1001", "lv": 1, "en": {"title": "Introduction to Generative AI and Prompt Engineering", "desc": "Learn how generative AI works and how to write clear prompts that get useful results.", "target": "F1+", "dur": "4 classes", "period": "16 Jan – 20 Feb 2027", "venue": "AC1 5/F Classroom", "size": "50 – 60 students (2 classes)"}, "zh": {"title": "生成式 AI 與提示工程入門", "desc": "了解生成式 AI 的運作原理，學習撰寫清晰的提示，得到更有用的結果。", "target": "中一或以上", "dur": "4 堂", "period": "2027 年 1 月 16 日至 2 月 20 日", "venue": "AC1 5 樓課室", "size": "50 – 60 位學生（2 班）"}}, {"code": "BFAI 1002", "lv": 1, "en": {"title": "Creative Media Production with Generative AI", "desc": "Create images, audio and short videos with generative AI tools, from first idea to finished clip.", "target": "F1+", "dur": "4 classes", "period": "27 Feb – 3 Apr 2027", "venue": "AC1 5/F Classroom", "size": "50 – 60 students (2 classes)"}, "zh": {"title": "生成式 AI 創意媒體製作", "desc": "運用生成式 AI 工具創作圖像、聲音及短片，由最初構思到完成作品。", "target": "中一或以上", "dur": "4 堂", "period": "2027 年 2 月 27 日至 4 月 3 日", "venue": "AC1 5 樓課室", "size": "50 – 60 位學生（2 班）"}}, {"code": "BFAI 2003", "lv": 2, "en": {"title": "Programming Fundamentals and Vibe Coding", "desc": "Write your first programs in Python and learn to build with AI-assisted coding.", "target": "F2/3+", "dur": "4 classes + required practical", "period": "26 Jun – 21 Jul 2027", "venue": "AC2 Lab + DS Lab", "size": "40 – 50 students (2 classes)"}, "zh": {"title": "編程基礎與 Vibe Coding", "desc": "以 Python 編寫第一個程式，並學習運用 AI 輔助編程進行創作。", "target": "中二／中三或以上", "dur": "4 堂 + 必修實習課", "period": "2027 年 6 月 26 日至 7 月 21 日", "venue": "AC2 實驗室 + DS 實驗室", "size": "40 – 50 位學生（2 班）"}}, {"code": "BFAI 2004", "lv": 2, "en": {"title": "Design and Development of AI Assistants", "desc": "Design and build your own AI assistant by linking prompts, tools and logic together.", "target": "F2/3+", "dur": "4 classes", "period": "7 Aug – 4 Sep 2027", "venue": "AC2 Lab + DS Lab", "size": "40 – 50 students (2 classes)"}, "zh": {"title": "AI 助手設計與開發", "desc": "把提示、工具與邏輯連結起來，設計並打造屬於自己的 AI 助手。", "target": "中二／中三或以上", "dur": "4 堂", "period": "2027 年 8 月 7 日至 9 月 4 日", "venue": "AC2 實驗室 + DS 實驗室", "size": "40 – 50 位學生（2 班）"}}, {"code": "BFAI 3005", "lv": 3, "en": {"title": "Introduction to Reinforcement Learning for Game Playing", "desc": "Train an AI agent to play games and see how it learns by trial and error.", "target": "F4+", "dur": "4 classes", "period": "25 Sep – 30 Oct 2027", "venue": "AC2 Lab + DS Lab", "size": "30 – 40 students (1 – 2 classes)"}, "zh": {"title": "遊戲強化學習入門", "desc": "訓練 AI 代理玩遊戲，看它如何從嘗試與錯誤中學習。", "target": "中四或以上", "dur": "4 堂", "period": "2027 年 9 月 25 日至 10 月 30 日", "venue": "AC2 實驗室 + DS 實驗室", "size": "30 – 40 位學生（1 – 2 班）"}}, {"code": "BFAI 3006", "lv": 3, "en": {"title": "Introduction to Machine Learning", "desc": "Find out how computers learn patterns from data, and train your first machine learning models.", "target": "F4+", "dur": "4 classes", "period": "6 Nov – 4 Dec 2027", "venue": "AC2 Lab + DS Lab", "size": "30 – 40 students (1 – 2 classes)"}, "zh": {"title": "機器學習入門", "desc": "了解電腦如何從數據中找出規律，並訓練你的第一個機器學習模型。", "target": "中四或以上", "dur": "4 堂", "period": "2027 年 11 月 6 日至 12 月 4 日", "venue": "AC2 實驗室 + DS 實驗室", "size": "30 – 40 位學生（1 – 2 班）"}}, {"code": "BFAI 4007", "lv": 4, "en": {"title": "Introduction to Deep Learning", "desc": "Explore neural networks and how deep learning powers image, language and speech AI.", "target": "F5+", "dur": "4 classes", "period": "15 Jan – 19 Feb 2028", "venue": "AC2 Lab + DS Lab", "size": "20 – 30 students (1 class)"}, "zh": {"title": "深度學習入門", "desc": "探索神經網絡，了解深度學習如何推動圖像、語言及語音 AI。", "target": "中五或以上", "dur": "4 堂", "period": "2028 年 1 月 15 日至 2 月 19 日", "venue": "AC2 實驗室 + DS 實驗室", "size": "20 – 30 位學生（1 班）"}}, {"code": "BFAI 4008", "lv": 4, "en": {"title": "Foundations of Computational Decision Making", "desc": "Understand the maths behind how AI weighs up options and makes decisions.", "target": "F5+", "dur": "4 classes", "period": "26 Feb – 25 Mar 2028", "venue": "AC2 Lab + DS Lab", "size": "Fewer than 20 students"}, "zh": {"title": "計算決策基礎", "desc": "了解 AI 背後的數學，看它如何權衡選項並作出決定。", "target": "中五或以上", "dur": "4 堂", "period": "2028 年 2 月 26 日至 3 月 25 日", "venue": "AC2 實驗室 + DS 實驗室", "size": "少於 20 位學生"}}, {"code": "BFAI 5009", "lv": 5, "en": {"title": "Research Project in Embodied AI and Robotics", "desc": "Become an independent problem solver on frontier research, helping solve real challenges in robotics and embodied AI.", "points": ["Become an independent problem solver on frontier research", "Help solve real challenges in robotics and embodied AI", "Work in a lab and academic environment", "Collaborate with an academic supervisor"], "lpoints": ["Independent problem solver on frontier research", "Help solve real robotics & embodied AI challenges", "Lab & academic environment", "Collaborate with an academic supervisor"], "target": "To be announced", "dur": "4 classes + research", "period": "From 1 Apr 2028 (research into summer)", "venue": "Lab & academic setting", "size": "To be announced"}, "zh": {"title": "具身智能與機械人研究專題", "desc": "面對前沿研究難題，培養獨立自主解難能力，協助解決機械人及具身智能領域的真實挑戰。", "points": ["面對前沿研究難題，培養獨立自主解難能力", "協助解決機械人及具身智能的真實挑戰", "在實驗室及學術環境中學習", "與學術導師協作"], "lpoints": ["培養獨立自主解難能力", "解決機械人及具身智能真實挑戰", "實驗室及學術環境", "與學術導師協作"], "target": "待公佈", "dur": "4 堂 + 研究", "period": "2028 年 4 月 1 日起（研究期延至夏季）", "venue": "實驗室及學術環境", "size": "待公佈"}}];
+  var SCHEDULE = window.CRAFTAI_SCHEDULE;
   var lang = 'en', cur = 0;
   var T = {
     en: { level: 'Level ', lvl: function (n) { return 'Level ' + n; }, target: 'Target', dur: 'Duration', period: 'Period', venue: 'Venue', size: 'Class size', path: ' pathway', note: 'Your path!',
           proj: 'Project + presentation', projP: 'Show what you built across the courses.', projT: '2 wks', exam: 'Exam', examP: 'A one-week exam covering the courses.', examT: '1 wk', res: 'Supervised research', resP: 'Work with an academic supervisor on real robotics research.', resT: 'Lab', see: 'See course details ↑', full: 'See full details ↑' },
-    zh: { level: '第 ', lvl: function (n) { return '第 ' + n + ' 級'; }, target: 'Target', dur: 'Duration', period: 'Period', venue: 'Venue', size: 'Class size', path: ' 學習路徑', note: 'Your path!',
+    zh: { level: '第 ', lvl: function (n) { return '第 ' + n + ' 級'; }, target: '對象', dur: '課堂', period: '時段', venue: '地點', size: '班別人數', path: ' 學習路徑', note: 'Your path!',
           proj: '專題 + 匯報', projP: '展示你在課程中的創作成果。', projT: '2 wks', exam: '考試', examP: '為期一星期的考試，涵蓋課程內容。', examT: '1 wk', res: '導師指導研究', resP: '在學術導師指導下，進行真實的機械人研究。', resT: 'Lab', see: '查看課程詳情 ↑', full: 'See full details ↑' }
   };
   var ICON = {
@@ -80,11 +81,52 @@
   function emTitle(s) {
     var i = s.lastIndexOf(' '); return i < 0 ? (lang === 'zh' ? s : '<em>' + s + '</em>') : s.slice(0, i + 1) + '<em>' + s.slice(i + 1) + '</em>';
   }
+  function scheduleDate(iso) {
+    return new Intl.DateTimeFormat(lang === 'zh' ? 'zh-HK' : 'en-GB', {
+      weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'
+    }).format(new Date(iso + 'T12:00:00Z'));
+  }
+  function renderCourseDates(c) {
+    var zh = lang === 'zh', schedule = SCHEDULE.courses[cur];
+    var labels = zh ? {
+      title: '課程日期', provisional: '暫定', classes: '上課日期',
+      practical: '必修實習課', project: 'Project Day', exam: '考試', resit: '補考',
+      report: '中期報告', reserve: '共用後備日', briefing: '外部申請者簡報及補做',
+      more: '在學年日曆查看', unknown: '時間待公佈', zone: '所有時間均為香港時間',
+      research: '研究期由 2028 年 5 月起延至夏季，不設固定完結日。',
+      period: '第 1 至 4 級的課程時段由首堂至主要評核日；後備、補做及補考日期另列。'
+    } : {
+      title: 'Course dates', provisional: 'Provisional', classes: 'Class dates',
+      practical: 'Required practical', project: 'Project Day', exam: 'Exam', resit: 'Resit',
+      report: 'Midterm report', reserve: 'Shared reserve day', briefing: 'External applicant briefing / make-up',
+      more: 'View in academic calendar', unknown: 'Time to be confirmed', zone: 'All times are Hong Kong time',
+      research: 'Research runs from May into summer 2028, with no fixed end date.',
+      period: 'For Levels 1–4, periods run from the first class to the main assessment. Reserve, make-up and resit dates are listed separately.'
+    };
+    var events = SCHEDULE.events.filter(function (e) {
+      return e.kind !== 'class' && (e.courseIndex === cur || (e.courseIndex === null && e.level === c.lv));
+    });
+    var dates = schedule.classes.map(function (date) {
+      return '<li><time datetime="' + date + '">' + scheduleDate(date) + '</time></li>';
+    }).join('');
+    var extra = events.map(function (e) {
+      return '<li class="date-event"><strong>' + labels[e.kind] + '</strong><time datetime="' + e.date + '">' +
+        scheduleDate(e.date) + '</time><span>' + (e.startTime && e.endTime ? e.startTime + '–' + e.endTime : labels.unknown) + '</span></li>';
+    }).join('');
+    document.getElementById('dDates').innerHTML =
+      '<header class="dates-heading"><div><h3>' + labels.title + ' · ' + c.code + '</h3><strong class="provisional-badge">' + labels.provisional + '</strong></div>' +
+      '<button type="button" class="dates-calendar-link" data-calendar-course="' + cur + '">' + labels.more + ' ↓</button></header>' +
+      '<div class="dates-columns"><div><h4>' + labels.classes + '</h4><p class="dates-time">09:00–12:00 · ' + labels.zone + '</p>' +
+      '<ul class="class-date-list">' + dates + '</ul></div><div><ul class="date-event-list">' + extra + '</ul>' +
+      (schedule.researchOpenEnded ? '<p class="research-dates-note">' + labels.research + '</p>' : '') + '</div></div>' +
+      '<p class="dates-footnote">' + labels.period + '</p>';
+  }
+
   function renderDetail(animate) {
     var c = COURSES[cur], d = c[lang], t = T[lang];
     var sec = document.getElementById('course');
     sec.setAttribute('data-level', c.lv);
-    var rows = [['target', t.target, d.target], ['dur', t.dur, d.dur], ['period', t.period, d.period]];
+    var rows = [['target', t.target, d.target], ['dur', t.dur, d.dur], ['period', t.period, d.period + '<br><strong class="provisional-badge date-status">' + (lang === 'zh' ? '暫定' : 'Provisional') + '</strong>']];
     document.getElementById('dLeft').innerHTML =
       '<span class="lvpill">' + lvLabel(c.lv) + ' · ' + c.code + '</span>' +
       '<h2 class="title">' + emTitle(d.title) + '</h2>' +
@@ -95,15 +137,12 @@
     var first = (c.lv - 1) * 2, items = '';
     (c.lv === 5 ? [8] : [first, first + 1]).forEach(function (k) {
       var o = COURSES[k], od = o[lang];
-      items += '<li class="' + (k === cur ? 'cur' : '') + '"><time>' + o.en.dur.replace(' weeks', ' wks').replace(' week', ' wk') + '</time><div>' +
+      items += '<li class="' + (k === cur ? 'cur' : '') + '"><time>' + od.dur + '</time><div>' +
         '<button type="button" class="path-link" data-i="' + k + '"><h4>' + o.code + ' · ' + od.title + '' + '</h4></button>' +
-        (od.points ? ptsHtml(od, 'p') : '<p>' + od.desc + '</p>') + '</div></li>';
+        (od.points ? ptsHtml(od, 'p') : '<p>' + od.desc + '</p>') + '<p class="path-assessment">' + (SCHEDULE.courses[k].primaryAssessment.kind === 'project' ? 'Project Day' : SCHEDULE.courses[k].primaryAssessment.kind === 'exam' ? (lang === 'zh' ? '考試' : 'Exam') : (lang === 'zh' ? '中期報告' : 'Midterm report')) + ' · ' + scheduleDate(SCHEDULE.courses[k].primaryAssessment.date) + '</p></div></li>';
     });
     if (c.lv === 5) {
       items += '<li><time>' + t.resT + '</time><div><h4>' + t.res + '</h4><p>' + t.resP + '</p></div></li>';
-    } else {
-      var proj = c.lv <= 2;
-      items += '<li><time>' + (proj ? t.projT : t.examT) + '</time><div><h4>' + (proj ? t.proj : t.exam) + '</h4><p>' + (proj ? t.projP : t.examP) + '</p></div></li>';
     }
     document.getElementById('dShow').innerHTML =
       '<header><h3>' + (t.lvl(c.lv) + t.path) + '</h3><span>' + t.note + '</span></header><ol>' + items + '</ol>';
@@ -119,6 +158,7 @@
         '<div><h3><small>' + lvLabel(c.lv) + ' · ' + c.code + '</small>' + d.title + '</h3><p>' + d.desc + '</p></div>' +
         '<button type="button" class="btn btn-navy" data-go="1">' + t.see + '</button>';
     }
+    renderCourseDates(c);
     if (animate) {
       ['dLeft', 'dShow'].forEach(function (id) {
         var el = document.getElementById(id); el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap');
@@ -129,10 +169,12 @@
     cur = i; renderDetail(true);
     if (scroll) {
       var r = document.getElementById('course').getBoundingClientRect();
-      if (r.top > window.innerHeight - 220) document.getElementById('course').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (r.top < 76 || r.top > window.innerHeight - 220) document.getElementById('course').scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
     }
   }
   document.addEventListener('click', function (e) {
+    var calendarButton = e.target.closest ? e.target.closest('[data-calendar-course]') : null;
+    if (calendarButton) { window.CraftAICalendar.showCourse(Number(calendarButton.getAttribute('data-calendar-course'))); return; }
     if (e.target.closest && e.target.closest('[data-go]')) { document.getElementById('course').scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
     var b = e.target.closest ? e.target.closest('[data-i]') : null;
     if (b) {
@@ -167,7 +209,7 @@
       el.innerHTML = l === 'zh' ? el.getAttribute('data-zh') : el.__en;
     });
     document.querySelectorAll('body *').forEach(function (el) {
-      if (el.children.length || el.closest('.eyebrow,.hand,.tag,.lvl,.step .meta,.legal,.foot h4,.fq,.lsw,[data-zh],#dLeft,#dShow,#bCap,.more,script,style,svg')) return;
+      if (el.children.length || el.closest('.eyebrow,.hand,.tag,.lvl,.step .meta,.legal,.foot h4,.fq,.lsw,[data-zh],#dLeft,#dShow,#bCap,[data-no-translate],.more,script,style,svg')) return;
       if (el.__k === undefined) {
         var k = el.textContent.replace(/\s+/g, ' ').trim();
         if (!Object.prototype.hasOwnProperty.call(ZH_TXT, k)) return;
@@ -185,8 +227,10 @@
     document.querySelectorAll('[data-l]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-l') === lang ? 'true' : 'false'); });
     renderDetail(false);
     document.querySelectorAll('.bl').forEach(buildMore); syncOpen();
+    window.CraftAICalendar.setLang(lang);
   }
   document.querySelectorAll('[data-l]').forEach(function (b) { b.addEventListener('click', function () { setLang(b.getAttribute('data-l')); }); });
+  window.CraftAICalendar.init(COURSES, SCHEDULE);
   var want = window.CRAFTAI_LANG || (/[?&]lang=zh/.test(location.search) ? 'zh' : 'en');
   if (want === 'zh') setLang('zh');
 })();
