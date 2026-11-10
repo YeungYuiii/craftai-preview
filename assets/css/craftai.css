@@ -136,6 +136,7 @@ h2.title em { font-style: italic; font-weight: 900; color: var(--royal); }
 .level-takeaway p { color: #d3dcff; font-size: 14px; line-height: 1.6; }
 @media (max-width: 960px) { .level-takeaways { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; } .level-takeaway:last-child { grid-column: 1 / -1; } }
 @media (max-width: 560px) { .level-takeaways { grid-template-columns: minmax(0, 1fr); } }
+.schedule-note { margin: 0 0 24px; color: #d3dcff; font-size: 13px; line-height: 1.6; }
 /* nine courses in one horizontally scrolling row; the fifth card peeks in on desktop so the row reads as scrollable */
 .steps { display: flex; gap: 16px; list-style: none; margin: 0; padding: 0 0 18px; padding-inline: max(var(--gutter), calc((100% - var(--maxw)) / 2)); scroll-padding-inline: max(var(--gutter), calc((100% - var(--maxw)) / 2)); overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-top: 8px; padding-bottom: 26px; }
 .steps:focus-visible { outline-offset: 6px; }
