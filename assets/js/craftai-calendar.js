@@ -86,14 +86,6 @@
     }
     return '<div class="cityu-month-frame"><h3 class="cityu-month-heading" id="cityu-month-heading-' + month + '">' + esc(monthTitle(month)) + '</h3><table class="cityu-month-grid" aria-labelledby="cityu-month-heading-' + month + '"><thead><tr>' + copy[state.lang].weekdays.map(function (day, i) { return '<th scope="col"' + (i === 0 ? ' class="cityu-sunday"' : '') + '>' + day + '</th>'; }).join('') + '</tr></thead><tbody>' + rows + '</tbody></table></div>';
   }
-  function groupedDates(events) {
-    var separator = state.lang === 'zh' ? '、' : ', ';
-    var days = events.map(function (event) {
-      return '<time datetime="' + event.date + '">' + Number(event.date.slice(8)) + '</time>';
-    }).join(separator);
-    var parts = events[0].date.split('-'), year = Number(parts[0]), month = Number(parts[1]);
-    return state.lang === 'zh' ? year + ' 年 ' + month + ' 月 ' + days + ' 日' : days + ' ' + esc(formatDate(events[0].date, { month: 'long', year: 'numeric' }));
-  }
   function renderEventTable(month, events) {
     var t = copy[state.lang], selected = state.days[month];
     var shown = selected ? events.filter(function (event) { return event.date === selected; }) : events;
@@ -105,12 +97,11 @@
       group.events.push(event);
     });
     var rows = courseGroups.map(function (group) {
-      var course = group.courseIndex == null ? null : courses[group.courseIndex], kinds = [];
-      group.events.forEach(function (event) { if (kinds.indexOf(event.kind) < 0) kinds.push(event.kind); });
-      var dateLines = kinds.map(function (kind) {
-        var dates = group.events.filter(function (event) { return event.kind === kind; });
-        return '<p class="cityu-date-line">' + (kind === 'class' ? '' : '<span class="cityu-date-kind">' + esc(t[kind]) + ': </span>') + groupedDates(dates) + '</p>';
-      }).join('');
+      var course = group.courseIndex == null ? null : courses[group.courseIndex];
+      var dateLines = '<ul class="cityu-date-list">' + group.events.map(function (event) {
+        return '<li><time datetime="' + event.date + '">' + esc(formatDate(event.date, { day: 'numeric', month: 'long', year: 'numeric' })) + '</time>' +
+          (event.kind === 'class' ? '' : ' <span class="cityu-date-kind">— ' + esc(t[event.kind]) + '</span>') + '</li>';
+      }).join('') + '</ul>';
       return '<tr><td>' + (course ? '<button type="button" class="cityu-course-link" data-i="' + group.courseIndex + '" aria-label="' + esc(course.code + ' · ' + course[state.lang].title) + '">' + esc(course.code) + '</button>' : '<span class="cityu-shared-level">' + esc(t.level + group.level + (state.lang === 'zh' ? ' 級' : '')) + '</span>') + '</td><td>' + dateLines + '</td></tr>';
     }).join('');
     if (!rows) rows = '<tr><td colspan="2" class="cityu-empty-month">' + t.noEvents + '</td></tr>';
