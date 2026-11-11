@@ -102,7 +102,7 @@
         return '<li><time datetime="' + event.date + '">' + esc(formatDate(event.date, { day: 'numeric', month: 'long', year: 'numeric' })) + '</time>' +
           (event.kind === 'class' ? '' : ' <span class="cityu-date-kind">— ' + esc(t[event.kind]) + '</span>') + '</li>';
       }).join('') + '</ul>';
-      return '<tr><td>' + (course ? '<button type="button" class="cityu-course-link" data-i="' + group.courseIndex + '" aria-label="' + esc(course.code + ' · ' + course[state.lang].title) + '">' + esc(course.code) + '</button>' : '<span class="cityu-shared-level">' + esc(t.level + group.level + (state.lang === 'zh' ? ' 級' : '')) + '</span>') + '</td><td>' + dateLines + '</td></tr>';
+      return '<tr><td>' + (course ? '<span class="cityu-course-code">' + esc(course.code) + '</span>' : '<span class="cityu-shared-level">' + esc(t.level + group.level + (state.lang === 'zh' ? ' 級' : '')) + '</span>') + '</td><td>' + dateLines + '</td></tr>';
     }).join('');
     if (!rows) rows = '<tr><td colspan="2" class="cityu-empty-month">' + t.noEvents + '</td></tr>';
     return '<div class="cityu-events-wrap" id="cityu-events-' + month + '">' + (selected ? '<button type="button" class="cityu-clear-date" data-cityu-clear="' + month + '">' + t.clearDate + ' ↗</button>' : '') + '<table class="cityu-events-table"><caption class="cityu-sr-only">' + esc(monthTitle(month) + ' · ' + t.date) + '</caption><thead><tr><th scope="col">' + t.course + '</th><th scope="col">' + t.date + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';

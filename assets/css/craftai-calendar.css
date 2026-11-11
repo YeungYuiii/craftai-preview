@@ -56,11 +56,10 @@
 .cityu-events-table th, .cityu-events-table td { border: 1px solid #c9c9c9; padding: 12px 14px; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
 .cityu-events-table th { font-weight: 700; background: #f4f4f4; }
 .cityu-events-table th:first-child { width: 29%; }
-.cityu-course-link { border: 0; padding: 0; margin: 3px 0; display: block; border-radius: 0; background: none; color: #bf165e; text-align: left; font-size: 14px !important; line-height: 1.55 !important; font-weight: 500 !important; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.cityu-course-code { display: block; color: inherit; font-weight: 500; }
 .cityu-date-list { list-style: disc; margin: 0; padding-left: 20px; display: grid; gap: 6px; }
 .cityu-date-list li { padding-left: 2px; }
 .cityu-date-kind { font-size: 12px; color: #555; }
-.cityu-course-link:hover { color: #8d0e42; }
 .cityu-shared-level { display: block; margin: 3px 0; }
 .cityu-clear-date { display: block; margin-bottom: 10px; padding: 0; border: 0; border-radius: 0; background: none; color: #bf165e; font-size: 13px !important; text-align: left; text-decoration: underline; text-underline-offset: 3px; }
 .cityu-empty-month { color: #666; font-size: 14px; }
@@ -91,7 +90,6 @@
   .cityu-month-heading { padding-block: 14px; }
   .cityu-events-table { font-size: 13px !important; }
   .cityu-events-table th, .cityu-events-table td { padding: 9px; }
-  .cityu-course-link { font-size: 13px !important; }
 }
 
 /* Match CityUHK's academic-calendar heading and typography within this section. */
