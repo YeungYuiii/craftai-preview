@@ -86,17 +86,35 @@
       weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'
     }).format(new Date(iso + 'T12:00:00Z'));
   }
+  function courseDatePoints(index) {
+    var labels = lang === 'zh' ? { practical: '必修實習課', project: '專題匯報日', exam: '考試', report: '中期報告' } :
+      { practical: 'Required practical', project: 'Project Day', exam: 'Exam', report: 'Midterm report' };
+    var dates = SCHEDULE.events.filter(function (event) {
+      return event.courseIndex === index && /^(class|practical|project|exam|report)$/.test(event.kind);
+    }).slice().sort(function (a, b) { return a.date.localeCompare(b.date); });
+    var formatter = new Intl.DateTimeFormat(lang === 'zh' ? 'zh-HK' : 'en-GB', {
+      day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'
+    });
+    var html = '<ul class="course-fact-dates">' + dates.map(function (event) {
+      return '<li><time datetime="' + event.date + '">' + formatter.format(new Date(event.date + 'T12:00:00Z')) + '</time>' +
+        (event.kind === 'class' ? '' : ' <span class="course-fact-date-kind">— ' + labels[event.kind] + '</span>') + '</li>';
+    }).join('') + '</ul>';
+    if (SCHEDULE.courses[index].researchOpenEnded) {
+      html += '<p class="course-fact-research">' + (lang === 'zh' ? '研究期延至 2028 年夏季，不設固定完結日。' : 'Research continues into summer 2028 with no fixed end date.') + '</p>';
+    }
+    return html;
+  }
   function renderDetail(animate) {
     var c = COURSES[cur], d = c[lang], t = T[lang];
     var sec = document.getElementById('course');
     sec.setAttribute('data-level', c.lv);
-    var rows = [['target', t.target, d.target], ['dur', t.dur, d.dur], ['period', t.period, d.period + '<br><strong class="provisional-badge date-status">' + (lang === 'zh' ? '暫定' : 'Provisional') + '</strong>']];
+    var rows = [['target', t.target, d.target], ['dur', t.dur, d.dur], ['period', t.period, courseDatePoints(cur) + '<strong class="provisional-badge date-status">' + (lang === 'zh' ? '暫定' : 'Provisional') + '</strong>']];
     document.getElementById('dLeft').innerHTML =
       '<span class="lvpill">' + lvLabel(c.lv) + ' · ' + c.code + '</span>' +
       '<h2 class="title">' + emTitle(d.title) + '</h2>' +
       (d.points ? ptsHtml(d, 'lede') : '<p class="lede">' + d.desc + '</p>') +
       '<dl class="facts" style="margin-bottom:0">' + rows.map(function (r) {
-        return '<div class="fact">' + ICON[r[0]] + '<dt>' + r[1] + '</dt><dd>' + r[2] + '</dd></div>';
+        return '<div class="fact' + (r[0] === 'period' ? ' fact-dates' : '') + '">' + ICON[r[0]] + '<dt>' + r[1] + '</dt><dd>' + r[2] + '</dd></div>';
       }).join('') + '</dl>';
     var first = (c.lv - 1) * 2, items = '';
     (c.lv === 5 ? [8] : [first, first + 1]).forEach(function (k) {
