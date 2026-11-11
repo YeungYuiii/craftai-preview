@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   var app, view, status, courses = [], schedule = { courses: [], events: [] };
-  var state = { lang: 'en', group: 0, course: -1, days: {} };
+  var state = { lang: 'en', group: 0, course: -1 };
   var groups = [
     { en: 'Jan–May 2027', zh: '2027 年 1–5 月', year: 2027, first: 1, last: 5 },
     { en: 'Jun–Dec 2027', zh: '2027 年 6–12 月', year: 2027, first: 6, last: 12 },
@@ -12,7 +12,7 @@
       course: 'Course', allCourses: 'All courses', jump: 'Jump to month', date: 'Dates', events: 'Events',
       noEvents: 'No scheduled events this month.', noGroupEvents: 'No scheduled events for this course in this period.',
       noGroupHint: 'Choose another period or select all courses.', noMonths: 'No matching months',
-      clearDate: 'Show all dates this month', level: 'Shared Level ',
+      level: 'Shared Level ',
       class: 'Class', practical: 'Compulsory practical', project: 'Project Day', exam: 'Exam', resit: 'Resit',
       report: 'Midterm report', reserve: 'Reserve day', briefing: 'External applicant briefing / make-up',
       classLegend: 'Classes / practical', assessmentLegend: 'Assessments', supportLegend: 'Reserve / briefing',
@@ -23,7 +23,7 @@
       course: '課程', allCourses: '所有課程', jump: '跳至月份', date: '日期', events: '活動',
       noEvents: '本月未有已排定的活動。', noGroupEvents: '此課程在這段期間未有已排定的活動。',
       noGroupHint: '請選擇其他期間，或選擇所有課程。', noMonths: '未有相關月份',
-      clearDate: '顯示本月所有日期', level: '共用：第 ',
+      level: '共用：第 ',
       class: '課堂', practical: '必修實習課', project: 'Project Day', exam: '考試', resit: '補考',
       report: '中期報告', reserve: '後備日', briefing: '外部申請者回校簡報／補做',
       classLegend: '課堂／實習', assessmentLegend: '評核', supportLegend: '後備／簡報',
@@ -41,7 +41,6 @@
     return new Intl.DateTimeFormat(state.lang === 'zh' ? 'zh-HK' : 'en-GB', Object.assign({ timeZone: 'UTC' }, options)).format(dateObject(iso));
   }
   function monthTitle(month) { return formatDate(month + '-01', { month: 'long', year: 'numeric' }); }
-  function dayTitle(iso) { return formatDate(iso, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); }
   function courseData(index) { return schedule.courses.find(function (item) { return item.courseIndex === index; }); }
   function matchingEvents(month) {
     return schedule.events.filter(function (event) {
@@ -79,7 +78,7 @@
         daily.forEach(function (event) { var kind = kindGroup(event); if (kinds.indexOf(kind) < 0) kinds.push(kind); });
         if (daily.length) {
           var highlight = kinds.length > 1 ? 'mixed' : kinds[0];
-          rows += '<td class="cityu-date-event cityu-event-' + highlight + sunday + '"><button type="button" class="cityu-date-button" data-cityu-date="' + iso + '" aria-pressed="' + (state.days[month] === iso ? 'true' : 'false') + '" aria-label="' + esc(dayTitle(iso) + ': ' + countLabel(daily.length)) + '" aria-controls="cityu-events-' + month + '">' + day + '</button></td>';
+          rows += '<td class="cityu-date-event cityu-event-' + highlight + sunday + '"><span class="cityu-date-number">' + day + '</span></td>';
         } else rows += '<td class="cityu-date' + sunday + '">' + day + '</td>';
       }
       if (slot % 7 === 6) rows += '</tr>';
@@ -87,8 +86,7 @@
     return '<div class="cityu-month-frame"><h3 class="cityu-month-heading" id="cityu-month-heading-' + month + '">' + esc(monthTitle(month)) + '</h3><table class="cityu-month-grid" aria-labelledby="cityu-month-heading-' + month + '"><thead><tr>' + copy[state.lang].weekdays.map(function (day, i) { return '<th scope="col"' + (i === 0 ? ' class="cityu-sunday"' : '') + '>' + day + '</th>'; }).join('') + '</tr></thead><tbody>' + rows + '</tbody></table></div>';
   }
   function renderEventTable(month, events) {
-    var t = copy[state.lang], selected = state.days[month];
-    var shown = selected ? events.filter(function (event) { return event.date === selected; }) : events;
+    var t = copy[state.lang], shown = events;
     var courseGroups = [];
     shown.forEach(function (event) {
       var key = event.courseIndex == null ? 'level-' + event.level : 'course-' + event.courseIndex;
@@ -105,14 +103,12 @@
       return '<tr><td>' + (course ? '<span class="cityu-course-code">' + esc(course.code) + '</span>' : '<span class="cityu-shared-level">' + esc(t.level + group.level + (state.lang === 'zh' ? ' 級' : '')) + '</span>') + '</td><td>' + dateLines + '</td></tr>';
     }).join('');
     if (!rows) rows = '<tr><td colspan="2" class="cityu-empty-month">' + t.noEvents + '</td></tr>';
-    return '<div class="cityu-events-wrap" id="cityu-events-' + month + '">' + (selected ? '<button type="button" class="cityu-clear-date" data-cityu-clear="' + month + '">' + t.clearDate + ' ↗</button>' : '') + '<table class="cityu-events-table"><caption class="cityu-sr-only">' + esc(monthTitle(month) + ' · ' + t.date) + '</caption><thead><tr><th scope="col">' + t.course + '</th><th scope="col">' + t.date + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+    return '<div class="cityu-events-wrap" id="cityu-events-' + month + '">' + '<table class="cityu-events-table"><caption class="cityu-sr-only">' + esc(monthTitle(month) + ' · ' + t.date) + '</caption><thead><tr><th scope="col">' + t.course + '</th><th scope="col">' + t.date + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
   }
   function rememberFocus() {
     var active = document.activeElement;
     if (!active || !app.contains(active)) return null;
     if (active.id) return '#' + active.id;
-    if (active.hasAttribute('data-cityu-date')) return '[data-cityu-date="' + active.getAttribute('data-cityu-date') + '"]';
-    if (active.hasAttribute('data-cityu-clear')) return '#cityu-jump-month';
     return null;
   }
   function render(announce) {
@@ -144,7 +140,7 @@
   function selectCourse(index, scroll) {
     index = Number(index);
     if (index !== -1 && !courses[index]) return;
-    state.course = index; state.days = {};
+    state.course = index;
     var details = courseData(index), first = details && details.classes && details.classes[0] || details && details.periodStart;
     if (first) state.group = groupForMonth(first.slice(0, 7));
     render(true);
@@ -162,16 +158,11 @@
       else if (event.target.id === 'cityu-jump-month') scrollToMonth(event.target.value);
     });
     app.addEventListener('click', function (event) {
-      var group = event.target.closest('[data-cityu-group]'), day = event.target.closest('[data-cityu-date]'), clear = event.target.closest('[data-cityu-clear]');
+      var group = event.target.closest('[data-cityu-group]');
       if (group) {
-        state.group = Number(group.getAttribute('data-cityu-group')); state.days = {}; render(true);
+        state.group = Number(group.getAttribute('data-cityu-group')); render(true);
         var selected = document.getElementById('cityu-period-' + state.group);
         if (selected) selected.focus({ preventScroll: true });
-      } else if (day) {
-        var date = day.getAttribute('data-cityu-date'), month = date.slice(0, 7);
-        state.days[month] = state.days[month] === date ? null : date; render(true);
-      } else if (clear) {
-        delete state.days[clear.getAttribute('data-cityu-clear')]; render(true);
       }
     });
     app.addEventListener('keydown', function (event) {
@@ -179,7 +170,7 @@
       if (!tab || ['ArrowLeft', 'ArrowRight', 'Home', 'End'].indexOf(event.key) < 0) return;
       event.preventDefault();
       var next = event.key === 'Home' ? 0 : event.key === 'End' ? groups.length - 1 : (Number(tab.getAttribute('data-cityu-group')) + (event.key === 'ArrowRight' ? 1 : -1) + groups.length) % groups.length;
-      state.group = next; state.days = {}; render(true);
+      state.group = next; render(true);
       document.getElementById('cityu-period-' + next).focus({ preventScroll: true });
     });
     render(false);
