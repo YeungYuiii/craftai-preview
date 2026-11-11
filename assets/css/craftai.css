@@ -356,14 +356,18 @@ footer { background: var(--navy); color: #fff; padding-block: clamp(40px, 5vw, 5
 }
 @media (prefers-reduced-motion: reduce) { .bub, .bp.on::after { animation: none; } .bp, .bl { transition: none; } .bl .more, .bl .more > span { transition: none; } }
 
-/* tablet */
-@media (max-width: 960px) {
+/* Keep the six navigation links clear on narrower screens. */
+@media (max-width: 1180px) {
   .nav ul { display: none; }
   .nav .bar { justify-content: space-between; }
   .nav .right { margin-left: auto; }
   .menu-btn { display: block; }
   .nav.open ul { display: grid; position: absolute; top: 100%; left: 0; right: 0; gap: 0; background: #0a1370; padding: 8px var(--gutter) 16px; border-top: 1px solid rgba(255,255,255,.12); }
   .nav.open ul a { display: block; padding: 14px 0; }
+}
+
+/* tablet */
+@media (max-width: 960px) {
   .step { flex-basis: calc(40% - 8px); }
   .ceremony-grid { grid-template-columns: 1fr; }
   .about .head { grid-template-columns: 1fr; }
