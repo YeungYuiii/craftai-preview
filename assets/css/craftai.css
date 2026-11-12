@@ -59,7 +59,7 @@ h2.title em { font-style: italic; font-weight: 900; color: var(--royal); }
 .nav ul { display: flex; gap: 30px; list-style: none; margin: 0 auto; padding: 0; }
 .menu-reg { display: none; }
 .nav ul a { font: 500 14px/1 var(--f-body); opacity: .92; padding: 8px 0; border-bottom: 2px solid transparent; }
-.nav ul a:hover { border-color: var(--yellow); opacity: 1; }
+.nav ul a:hover, .nav ul a[aria-current="page"] { border-color: var(--yellow); opacity: 1; }
 .menu-btn { display: none; background: none; border: 0; color: #fff; padding: 8px; cursor: pointer; }
 .menu-btn svg { width: 26px; height: 26px; }
 

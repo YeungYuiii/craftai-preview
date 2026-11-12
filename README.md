@@ -4,6 +4,7 @@ Static preview of the CraftAI Inauguration page (English + Chinese). No build st
 
 - English: `index.html`
 - Chinese: `zh/index.html` (the EN | 中 switch also works on both pages)
+- Academic calendar: `calendar.html` (English), `zh/calendar.html` (Chinese)
 - Assets: `assets/`
 
 ## Publish with GitHub Pages
